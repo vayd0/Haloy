@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class ArticlesSeeder extends Seeder {
@@ -30,12 +31,24 @@ Bref : une aventure nocturne minimaliste, un suspense à hauteur d’enfant, et 
             'image' => 'au-clair-de-la-lune.jpg',
             'media' => 'https://comptines.tv/musiques/au_clair_de_la_lune.mp3',
             "user_id" => 1,
-            "audience_id" => 1,
             "rythme_id" => 1,
             "accessibilite_id" => 3,
             "conclusion_id" => 1,
         ]);
 
+        $faker = Factory::create('fr_FR');
+        for($i = 1; $i <= 50; $i++)
+            Article::create([
+                'titre' => $faker->,
+                'resume' => $faker->realTextBetween(30, 100,  2),
+                'texte' => $faker->realTextBetween(160, 500,  2),
+                'image' => 'au-clair-de-la-lune.jpg',
+                'media' => 'https://comptines.tv/musiques/au_clair_de_la_lune.mp3',
+                "user_id" =>  $faker->numberBetween(1, 50),
+                "rythme_id" => $faker->numberBetween(1, 5),
+                "accessibilite_id" => $faker->numberBetween(1, 5),
+                "conclusion_id" => $faker->numberBetween(1, 5),
+            ]);
 
     }
 }

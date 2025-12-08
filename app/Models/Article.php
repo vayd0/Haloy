@@ -23,10 +23,7 @@ class Article extends Model
     public function accessibilite() {
         return $this->belongsTo(Accessibilite::class);
     }
-
-    public function audience() {
-        return $this->belongsTo(Audience::class);
-    }
+    
 
     public function conclusion() {
         return $this->belongsTo(Conclusion::class);

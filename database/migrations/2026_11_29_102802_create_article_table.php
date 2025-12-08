@@ -28,9 +28,6 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Accessibilite::class)->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignIdFor(\App\Models\Audience::class)->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->foreignIdFor(\App\Models\Conclusion::class)->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

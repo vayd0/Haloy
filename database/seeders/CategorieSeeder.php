@@ -49,14 +49,7 @@ class CategorieSeeder extends Seeder
             Conclusion::create(['texte' => $t]);
 
 
-        $table = [
-            "Accessible à tout le monde",
-            "Peut être écouté en famille",
-            "Seuls vos vrais amis comprennent le sens de cette musique",
-            "Tellement bizarre que je préfère être seul pour l'écouter",
-        ];
-        foreach ($table as $t)
-            Audience::create(['texte' => $t]);
+
     }
 
 }
