@@ -34,6 +34,7 @@ Bref : une aventure nocturne minimaliste, un suspense à hauteur d’enfant, et 
             "rythme_id" => 1,
             "accessibilite_id" => 3,
             "conclusion_id" => 1,
+            "en_ligne" => $faker->numberBetween(0, 1),
         ]);
 
         $faker = Factory::create('fr_FR');
