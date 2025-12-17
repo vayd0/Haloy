@@ -100,7 +100,7 @@
         <div class="article-content">
             <h2>Article complet</h2>
             <div class="article-text">
-                {!! nl2br(e($article->texte)) !!}
+                {!! Str::markdown($article->texte) !!}
             </div>
         </div>
 
