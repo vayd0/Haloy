@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\CaracteristiqueController;
 use App\Models\User;
