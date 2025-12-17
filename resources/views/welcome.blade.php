@@ -17,6 +17,7 @@
 
                     <div class="article-meta">
                         <span class="auteur">Par {{ $article->editeur->name }}</span>
+                        <span class="vues">{{ $article->nb_vues }} vues</span>
                     </div>
 
                     @if($article->rythme)

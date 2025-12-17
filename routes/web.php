@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\CaracteristiqueController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,8 @@ Route::post('/article/{article}/like', [ArticleController::class, 'like'])->name
 Route::post('/article/{article}/dislike', [ArticleController::class, 'dislike'])->name('article.dislike')->middleware('auth');
 Route::delete('/article/{article}/unlike', [ArticleController::class, 'unlike'])->name('article.unlike')->middleware('auth');
 Route::post('/article/{article}/comment', [ArticleController::class, 'addComment'])->name('article.comment')->middleware('auth');
+
+// Caracteristique Routes
+Route::get('/rythme/{id}', [CaracteristiqueController::class, 'rythme'])->name('rythme.articles');
+Route::get('/accessibilite/{id}', [CaracteristiqueController::class, 'accessibilite'])->name('accessibilite.articles');
+Route::get('/conclusion/{id}', [CaracteristiqueController::class, 'conclusion'])->name('conclusion.articles');
