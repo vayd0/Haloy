@@ -13,7 +13,7 @@
                 @foreach($articles as $article)
                     <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                         @if($article->image)
-                            <img src="{{ Vite::asset('resources/images/' . $article->image) }}" alt="{{ $article->titre }}" class="w-full h-48 object-cover">
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}" class="w-full h-48 object-cover">
                         @else
                             <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
                                 <span class="text-gray-400">Pas d'image</span>

@@ -4,6 +4,7 @@
 <div class="create-article-container">
     <h1>Créer un article</h1>
 
+
     @if ($errors->any())
         <div class="errors">
             <h3>Erreurs:</h3>
@@ -45,7 +46,7 @@
         <!-- Média audio -->
         <div class="form-group">
             <label for="media">Média audio *</label>
-            <input type="file" id="media" name="media" accept="audio/*" required>
+            <input type="file" id="media" name="media" accept=".mp3,.wav" required>
         </div>
 
         <!-- Rythme -->
@@ -95,4 +96,3 @@
     </form>
 </div>
 @endsection
-
