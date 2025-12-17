@@ -1,3 +1,4 @@
+{{-- Page de profil utilisateur : liste des articles en cours de rédaction --}}
 @extends('layout.app')
 
 @section('content')
@@ -36,4 +37,3 @@
         </div>
     </div>
 @endsection
-

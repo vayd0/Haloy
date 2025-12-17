@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // Affiche la page de profil avec les articles en brouillon
     public function profile()
     {
         $user = Auth::user();

@@ -21,6 +21,7 @@ Route::get('/home', function () {
     return view('home');
 })->name("home");
 
+// Routes nécessitant une authentification
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 });
