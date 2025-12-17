@@ -102,7 +102,7 @@ class ArticleController extends Controller
             ->get();
     }
 
-    // Aimer l'article
+    // Aimer article
     public function like(Article $article)
     {
         if (!Auth::check()) {
@@ -117,7 +117,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article aimé!');
     }
 
-    // Ne pas aimer l'article
+    // Ne pas aimer article
     public function dislike(Article $article)
     {
         if (!Auth::check()) {
@@ -132,7 +132,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Avis enregistré!');
     }
 
-    // Retirer le vote
+    // Retirer vote
     public function unlike(Article $article)
     {
         if (!Auth::check()) {
