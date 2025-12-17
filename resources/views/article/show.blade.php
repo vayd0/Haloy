@@ -22,7 +22,7 @@
                 @endif
             </span>
             <span class="article-views">
-                👁️ {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
+                 {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
             </span>
         </div>
     </div>
