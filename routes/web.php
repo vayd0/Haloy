@@ -20,6 +20,7 @@ Route::get('/test-vite', function () {
 
 // Routes pour l'affichage des articles (accueil et filtres)
 Route::get('/home', [ArticleController::class, 'index'])->name("home");
+Route::get('/articles', [ArticleController::class, 'allArticles'])->name('articles.all');
 Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByCharacteristic'])->name('articles.filter');
 
 // Routes nécessitant une authentification
@@ -42,7 +43,7 @@ Route::put('/article/{article}', [ArticleController::class, 'update'])->name('ar
 Route::get('/article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article/{article}/like', [ArticleController::class, 'like'])->name('article.like')->middleware('auth');
 Route::post('/article/{article}/dislike', [ArticleController::class, 'dislike'])->name('article.dislike')->middleware('auth');
-Route::delete('/article/{article}/unlike', [ArticleController::class, 'unlike'])->name('article.unlike')->middleware('auth');
+Route::post('/article/{article}/unlike', [ArticleController::class, 'unlike'])->name('article.unlike')->middleware('auth');
 Route::post('/article/{article}/comment', [ArticleController::class, 'addComment'])->name('article.comment')->middleware('auth');
 
 // Caracteristique Routes

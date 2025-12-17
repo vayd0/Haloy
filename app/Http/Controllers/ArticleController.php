@@ -24,6 +24,23 @@ class ArticleController extends Controller
         return view('home', compact('articles'));
     }
 
+    // Affiche tous les articles avec pagination
+    public function allArticles()
+    {
+        $query = Article::where('en_ligne', true);
+
+        if (Auth::check()) {
+            $query->orWhere('user_id', Auth::id());
+        }
+
+        $articles = $query
+            ->with(['editeur', 'rythme', 'accessibilite', 'conclusion'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('article.all', compact('articles'));
+    }
+
     // Filtre les articles par caractéristique (rythme, accessibilité, conclusion)
     public function filterByCharacteristic($type, $id)
     {
@@ -102,7 +119,7 @@ class ArticleController extends Controller
             ->get();
     }
 
-    // Aimer l'article
+    // Aimer article
     public function like(Article $article)
     {
         if (!Auth::check()) {
@@ -117,7 +134,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Article aimé!');
     }
 
-    // Ne pas aimer l'article
+    // Ne pas aimer article
     public function dislike(Article $article)
     {
         if (!Auth::check()) {
@@ -132,7 +149,7 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Avis enregistré!');
     }
 
-    // Retirer le vote
+    // Retirer vote
     public function unlike(Article $article)
     {
         if (!Auth::check()) {

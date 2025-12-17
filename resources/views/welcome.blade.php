@@ -43,8 +43,10 @@
             @endforelse
         </div>
 
-        <div class="pagination mt-8">
-            {{ $articles->links() }}
+        <div class="mt-8 text-center">
+            <a href="{{ route('articles.all') }}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Voir tous les articles
+            </a>
         </div>
     </section>
 
