@@ -3,5 +3,4 @@
 
 @section('contenu')
     La page d'un utilisateur
-
 @endsection
