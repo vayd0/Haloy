@@ -1,5 +1,5 @@
 <nav class="fixed top-0 left-0 right-0 mx-auto flex items-center justify-center px-8 py-4 text-white max-w-4xl z-30">
-    <section class="flex items-center space-x-8">
+    <section class="flex items-center gap-10">
         <a href="{{route('accueil')}}">Accueil</a>
         <a href="#">Contact</a>
     </section>
@@ -8,7 +8,7 @@
         <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-14 w-14 mx-8">
     </section>
 
-    <section class="flex items-center space-x-8">
+    <section class="flex items-center gap-10">
         @auth
             <!--{{Auth::user()->name}}-->
             <a href="{{route('article.create')}}">Créer article</a>

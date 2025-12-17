@@ -2,13 +2,14 @@
 @extends("layout.app")
 
 @section('contenu')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">Tous les articles</h1>
+    <div class="flex justify-center items-center px-[5rem] pt-[10rem]">
+        <div>
+            <h1 class="text-3xl font-bold mb-6 title">Tous les articles</h1>
 
         @if($articles->isEmpty())
             <p class="text-gray-600">Aucun article disponible.</p>
         @else
-            <div class="articles-grid flex justify-center flex-wrap gap-[3.5rem] w-full max-w-6xl mt-16">
+            <div class="articles-grid flex justify-around flex-wrap gap-[3.5rem] w-full mt-16">
                 @foreach($articles as $article)
                     <x-cards.article-card :article="$article" />
                 @endforeach
@@ -19,5 +20,6 @@
                 {{ $articles->links() }}
             </div>
         @endif
+        </div>
     </div>
 @endsection
