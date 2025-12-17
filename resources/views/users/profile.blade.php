@@ -5,6 +5,73 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Ma page personnelle</h1>
 
+        {{-- Section Notifications --}}
+        @if(isset($notifications) && $notifications->isNotEmpty())
+            <div class="bg-blue-50 shadow-md rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4">Nouveaux articles de vos abonnements</h2>
+                <div class="space-y-4">
+                    @foreach($notifications as $notification)
+                        <div class="bg-white border border-blue-200 rounded-lg p-4 flex items-start gap-4">
+                            @if($notification->data['article_image'])
+                                <img src="{{ asset('storage/' . $notification->data['article_image']) }}"
+                                     alt="{{ $notification->data['article_titre'] }}"
+                                     class="w-20 h-20 object-cover rounded">
+                            @endif
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600 mb-1">
+                                    <strong>{{ $notification->data['auteur_name'] }}</strong> a publié un nouvel article
+                                </p>
+                                <a href="{{ route('article.show', $notification->data['article_id']) }}"
+                                   class="text-lg font-semibold text-blue-600 hover:text-blue-800">
+                                    {{ $notification->data['article_titre'] }}
+                                </a>
+                                <p class="text-sm text-gray-600 mt-1">{{ $notification->data['article_resume'] }}</p>
+                                <p class="text-xs text-gray-400 mt-2">{{ $notification->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        {{-- Section Utilisateurs suggérés --}}
+        @if(isset($suggestedUsers) && $suggestedUsers->isNotEmpty())
+            <div class="bg-green-50 shadow-md rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4">Personnes aux profils similaires</h2>
+                <p class="text-sm text-gray-600 mb-4">Ces utilisateurs aiment les mêmes types d'articles que vous</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($suggestedUsers as $suggestedUser)
+                        <div class="bg-white border border-green-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3 mb-3">
+                                @if($suggestedUser->avatar)
+                                    <img src="{{ asset('storage/' . $suggestedUser->avatar) }}"
+                                         alt="{{ $suggestedUser->name }}"
+                                         class="w-12 h-12 rounded-full object-cover">
+                                @else
+                                    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">
+                                        {{ substr($suggestedUser->name, 0, 1) }}
+                                    </div>
+                                @endif
+                                <div class="flex-1">
+                                    <a href="{{ route('users.show', $suggestedUser->id) }}"
+                                       class="font-semibold text-gray-800 hover:text-green-600">
+                                        {{ $suggestedUser->name }}
+                                    </a>
+                                    <p class="text-xs text-gray-500">{{ $suggestedUser->likes_count }} articles similaires</p>
+                                </div>
+                            </div>
+                            <form action="{{ route('users.follow', $suggestedUser->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors text-sm font-medium">
+                                    Suivre
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <div class="bg-white shadow-md rounded-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Mes articles en cours de rédaction</h2>
 
