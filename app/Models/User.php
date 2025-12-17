@@ -21,7 +21,8 @@ class User extends Authenticatable
     }
 
     public function likes() {
-        return $this->belongsToMany(Article::class, 'likes');
+        // On ajoute withPivot pour que Laravel récupère aussi la colonne 'nature' (ticket #9)
+        return $this->belongsToMany(Article::class, 'likes')->withPivot('nature');
     }
 
     public function suivis() {

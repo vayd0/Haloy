@@ -21,6 +21,13 @@ Route::get('/home', function () {
     return view('home');
 })->name("home");
 
+// Route pour afficher la page d'un utilisateur
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+// Route pour l'action "Suivre" (nécessite d'être connecté)
+Route::post('/users/{user}/follow', [UserController::class, 'follow'])
+    ->middleware('auth')
+    ->name('users.follow');
 // Article Routes
 Route::get('/article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article/{article}/like', [ArticleController::class, 'like'])->name('article.like')->middleware('auth');
