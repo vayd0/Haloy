@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+
+.scd-font {
+    font-family:"UnifrakturCook";
+}
+
+#hero-text {
+    font-size: 10rem;
+    filter: drop-shadow(0 0 300px rgb(255, 255, 255,0.2));
+}
