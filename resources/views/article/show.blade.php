@@ -144,12 +144,23 @@
         <div class="article-comments">
             <h2>Commentaires ({{ $article->avis->count() }})</h2>
 
+            @if(session('success'))
+                <div class="alert alert-success" style="color: green; margin-bottom: 15px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             @auth
                 <div class="comment-form">
                     <h3>Ajouter un commentaire</h3>
                     <form action="{{ route('article.comment', $article->id) }}" method="POST">
                         @csrf
                         <textarea name="contenu" rows="4" placeholder="Votre commentaire..." required></textarea>
+                        @error('contenu')
+                            <div class="text-red-500 mt-2 text-sm" style="color: red;">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <button type="submit" class="btn btn-primary">Publier</button>
                     </form>
                 </div>
