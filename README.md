@@ -1,6 +1,6 @@
 ## Blog sur la musique
 
-Groupe test but25_groupeTT
+Groupe but25_groupe7
 
 ## Version initiale
 
