@@ -141,19 +141,54 @@ class ArticleController extends Controller
         return redirect()->back()->with('success', 'Avis retiré!');
     }
 
-    // Ajouter un commentaire
-    public function addComment(Request $request, Article $article)
+    // Afficher le formulaire de création
+    public function create()
     {
-        if (!Auth::check()) abort(401);
+        // Récupérer les caractéristiques
+        $rythmes = \App\Models\Rythme::all();
+        $accessibilites = \App\Models\Accessibilite::all();
+        $conclusions = \App\Models\Conclusion::all();
 
-        $request->validate(['contenu' => 'required|string|max:1000']);
+        return view('article.create', [
+            'rythmes' => $rythmes,
+            'accessibilites' => $accessibilites,
+            'conclusions' => $conclusions,
+        ]);
+    }
 
-        $article->avis()->create([
-            'user_id' => Auth::id(),
-            'contenu' => $request->contenu,
+    // Enregistrer l'article
+    public function store(Request $request)
+    {
+        // Valider les données
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'resume' => 'required|string|max:500',
+            'texte' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'media' => 'required|mimes:mp3,wav,m4a|max:20480',
+            'rythme_id' => 'required|exists:rythmes,id',
+            'accessibilite_id' => 'required|exists:accessibilites,id',
+            'conclusion_id' => 'required|exists:conclusions,id',
         ]);
 
-        return redirect()->back()->with('success', 'Commentaire ajouté!');
+        // Stocker les fichiers
+        $imagePath = $request->file('image')->store('articles', 'public');
+        $mediaPath = $request->file('media')->store('articles', 'public');
+
+        // Créer l'article
+        Article::create([
+            'titre' => $validated['titre'],
+            'resume' => $validated['resume'],
+            'texte' => $validated['texte'],
+            'image' => $imagePath,
+            'media' => $mediaPath,
+            'rythme_id' => $validated['rythme_id'],
+            'accessibilite_id' => $validated['accessibilite_id'],
+            'conclusion_id' => $validated['conclusion_id'],
+            'user_id' => Auth::id(),
+            'en_ligne' => false,
+        ]);
+
+        return redirect()->route('accueil')->with('success', 'Article créé avec succès!');
     }
 }
-
