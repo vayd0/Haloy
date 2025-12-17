@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\CaracteristiqueController;
 use App\Models\User;
@@ -36,6 +35,8 @@ Route::post('/users/{user}/follow', [UserController::class, 'follow'])
     ->middleware('auth')
     ->name('users.follow');
 // Article Routes
+Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create')->middleware('auth');
+Route::post('/article', [ArticleController::class, 'store'])->name('article.store')->middleware('auth');
 Route::get('/article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article/{article}/like', [ArticleController::class, 'like'])->name('article.like')->middleware('auth');
 Route::post('/article/{article}/dislike', [ArticleController::class, 'dislike'])->name('article.dislike')->middleware('auth');
