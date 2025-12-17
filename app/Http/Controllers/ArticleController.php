@@ -235,8 +235,22 @@ class ArticleController extends Controller
             $validated['media'] = $mediaPath;
         }
 
+        // Vérifier si l'article passe en ligne
+        $wasOffline = !$article->en_ligne;
+        $willBeOnline = $request->has('en_ligne') && $request->input('en_ligne');
+
         // Mettre à jour l'article
         $article->update($validated);
+
+        // Envoyer notification aux suiveurs si l'article passe en ligne
+        if ($wasOffline && $willBeOnline) {
+            $auteur = $article->editeur;
+            $suiveurs = $auteur->suiveurs;
+
+            foreach ($suiveurs as $suiveur) {
+                $suiveur->notify(new \App\Notifications\NewArticlePublished($article));
+            }
+        }
 
         return redirect()->route('article.show', $article)->with('success', 'Article mis à jour avec succès!');
     }
@@ -277,7 +291,7 @@ class ArticleController extends Controller
         $mediaPath = $request->file('media')->store('articles', 'public');
 
         // Créer l'article
-        Article::create([
+        $article = Article::create([
             'titre' => $validated['titre'],
             'resume' => $validated['resume'],
             'texte' => $validated['texte'],
@@ -289,6 +303,16 @@ class ArticleController extends Controller
             'user_id' => Auth::id(),
             'en_ligne' => $request->has('en_ligne') ? $request->input('en_ligne') : false,
         ]);
+
+        // Envoyer notification aux suiveurs si l'article est en ligne
+        if ($article->en_ligne) {
+            $auteur = Auth::user();
+            $suiveurs = $auteur->suiveurs;
+
+            foreach ($suiveurs as $suiveur) {
+                $suiveur->notify(new \App\Notifications\NewArticlePublished($article));
+            }
+        }
 
         return redirect()->route('accueil')->with('success', 'Article créé avec succès!');
     }
