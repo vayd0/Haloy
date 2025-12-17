@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accessibilites', function (Blueprint $table) {
-            $table->id();
-            $table->string('texte');
-            $table->string('image')->nullable();
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        #Modification de la fonction "drop" afin de correspondre à la fonction up et permettre d'utiliser la commande "php artisan migrate:refresh --seed"
-        Schema::dropIfExists('accessibilites');
+        Schema::dropIfExists('notifications');
     }
 };

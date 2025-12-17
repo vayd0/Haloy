@@ -8,13 +8,89 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    // Affiche la page de profil avec les articles en brouillon
+    // Affiche la page de profil avec les articles en brouillon, notifications et suggestions
     public function profile()
     {
         $user = Auth::user();
         $articles = $user->mesArticles()->where('en_ligne', false)->get();
 
-        return view('users.profile', compact('articles'));
+        // Récupérer les notifications non lues
+        $notifications = $user->unreadNotifications ?? collect();
+
+        // Trouver des utilisateurs similaires
+        $suggestedUsers = $this->findSimilarUsers($user);
+
+        return view('users.profile', compact('articles', 'notifications', 'suggestedUsers'));
+    }
+
+    /**
+     * Trouve des utilisateurs avec des goûts similaires
+     */
+    private function findSimilarUsers(User $user)
+    {
+        // Récupérer les articles aimés par l'utilisateur avec leurs caractéristiques
+        $likedArticles = $user->likes()
+            ->wherePivot('nature', true)
+            ->with(['rythme', 'accessibilite', 'conclusion'])
+            ->get();
+
+        if ($likedArticles->isEmpty()) {
+            return collect();
+        }
+
+        // Compter les occurrences de chaque caractéristique
+        $rythmes = $likedArticles->pluck('rythme_id')->filter()->countBy();
+        $accessibilites = $likedArticles->pluck('accessibilite_id')->filter()->countBy();
+        $conclusions = $likedArticles->pluck('conclusion_id')->filter()->countBy();
+
+        // Trouver la caractéristique la plus fréquente
+        $mostFrequentRythme = $rythmes->sortDesc()->keys()->first();
+        $mostFrequentAccessibilite = $accessibilites->sortDesc()->keys()->first();
+        $mostFrequentConclusion = $conclusions->sortDesc()->keys()->first();
+
+        // Récupérer les IDs des utilisateurs déjà suivis
+        $followedIds = $user->suivis()->pluck('users.id')->toArray();
+        $followedIds[] = $user->id; // Exclure l'utilisateur lui-même
+
+        // Trouver des utilisateurs qui aiment des articles avec les mêmes caractéristiques
+        $similarUsers = User::whereHas('likes', function ($query) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                $query->wherePivot('nature', true)
+                    ->whereHas('article', function ($subQuery) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                        $subQuery->where(function ($q) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                            if ($mostFrequentRythme) {
+                                $q->orWhere('rythme_id', $mostFrequentRythme);
+                            }
+                            if ($mostFrequentAccessibilite) {
+                                $q->orWhere('accessibilite_id', $mostFrequentAccessibilite);
+                            }
+                            if ($mostFrequentConclusion) {
+                                $q->orWhere('conclusion_id', $mostFrequentConclusion);
+                            }
+                        });
+                    });
+            })
+            ->whereNotIn('id', $followedIds)
+            ->withCount(['likes' => function ($query) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                $query->wherePivot('nature', true)
+                    ->whereHas('article', function ($subQuery) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                        $subQuery->where(function ($q) use ($mostFrequentRythme, $mostFrequentAccessibilite, $mostFrequentConclusion) {
+                            if ($mostFrequentRythme) {
+                                $q->orWhere('rythme_id', $mostFrequentRythme);
+                            }
+                            if ($mostFrequentAccessibilite) {
+                                $q->orWhere('accessibilite_id', $mostFrequentAccessibilite);
+                            }
+                            if ($mostFrequentConclusion) {
+                                $q->orWhere('conclusion_id', $mostFrequentConclusion);
+                            }
+                        });
+                    });
+            }])
+            ->orderByDesc('likes_count')
+            ->limit(5)
+            ->get();
+
+        return $similarUsers;
     }
 
     /**

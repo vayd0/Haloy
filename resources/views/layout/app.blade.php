@@ -11,9 +11,11 @@
 
 <body>
     @include("partials.navbar")
+
     <main>
         @yield("contenu")
     </main>
+
     @include("partials.footer")
 </body>
 
