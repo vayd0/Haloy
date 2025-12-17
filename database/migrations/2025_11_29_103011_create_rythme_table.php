@@ -24,6 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rythme');
+        #Modification de la fonction "drop" afin de correspondre à la fonction up et permettre d'utiliser la commande "php artisan migrate:refresh --seed"
+        Schema::dropIfExists('rythmes');
     }
 };
