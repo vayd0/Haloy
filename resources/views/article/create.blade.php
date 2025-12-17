@@ -4,6 +4,7 @@
 <div class="create-article-container">
     <h1>Créer un article</h1>
 
+
     @if ($errors->any())
         <div class="errors">
             <h3>Erreurs:</h3>
@@ -95,4 +96,3 @@
     </form>
 </div>
 @endsection
-
