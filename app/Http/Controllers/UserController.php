@@ -14,7 +14,7 @@ class UserController extends Controller
         $user = Auth::user();
         $articles = $user->mesArticles()->where('en_ligne', false)->get();
 
-        return view('user.profile', compact('articles'));
+        return view('users.profile', compact('articles'));
     }
 
     /**
