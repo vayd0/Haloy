@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\CaracteristiqueController;
@@ -17,9 +18,14 @@ Route::get('/test-vite', function () {
     return view('test-vite');
 })->name("test-vite");
 
-Route::get('/home', function () {
-    return view('home');
-})->name("home");
+// Routes pour l'affichage des articles (accueil et filtres)
+Route::get('/home', [ArticleController::class, 'index'])->name("home");
+Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByCharacteristic'])->name('articles.filter');
+
+// Routes nécessitant une authentification
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+});
 
 // Route pour afficher la page d'un utilisateur
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
