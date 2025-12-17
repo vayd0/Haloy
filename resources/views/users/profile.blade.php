@@ -5,6 +5,35 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Ma page personnelle</h1>
 
+        {{-- Section Notifications --}}
+        @if($notifications->isNotEmpty())
+            <div class="bg-blue-50 shadow-md rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4">Nouveaux articles de vos abonnements</h2>
+                <div class="space-y-4">
+                    @foreach($notifications as $notification)
+                        <div class="bg-white border border-blue-200 rounded-lg p-4 flex items-start gap-4">
+                            @if($notification->data['article_image'])
+                                <img src="{{ asset('storage/' . $notification->data['article_image']) }}"
+                                     alt="{{ $notification->data['article_titre'] }}"
+                                     class="w-20 h-20 object-cover rounded">
+                            @endif
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-600 mb-1">
+                                    <strong>{{ $notification->data['auteur_name'] }}</strong> a publié un nouvel article
+                                </p>
+                                <a href="{{ route('article.show', $notification->data['article_id']) }}"
+                                   class="text-lg font-semibold text-blue-600 hover:text-blue-800">
+                                    {{ $notification->data['article_titre'] }}
+                                </a>
+                                <p class="text-sm text-gray-600 mt-1">{{ $notification->data['article_resume'] }}</p>
+                                <p class="text-xs text-gray-400 mt-2">{{ $notification->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <div class="bg-white shadow-md rounded-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Mes articles en cours de rédaction</h2>
 
