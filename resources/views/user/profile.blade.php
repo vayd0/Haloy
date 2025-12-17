@@ -1,7 +1,7 @@
 {{-- Page de profil utilisateur : liste des articles en cours de rédaction --}}
 @extends('layout.app')
 
-@section('content')
+@section('contenu')
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-6">Ma page personnelle</h1>
 
