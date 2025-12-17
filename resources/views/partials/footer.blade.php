@@ -1,4 +1,4 @@
-<footer class="w-full text-white flex justify-center">
+<footer class="w-full text-white flex justify-center mt-[5rem]">
     <div class="max-w-2/3 mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
         <div class="text-center md:text-left text-sm font-light flex-1 whitespace-nowrap">

@@ -12,15 +12,15 @@
             inset: 0;
         }
     </style>
-    <section class="relative min-h-screen flex flex-col items-center justify-start pt-32">
-        <div class="relative w-full flex flex-col items-center overflow-visible">
-            <h1 class="scd-font" id="hero-text">Haloy</h1>
-            <div class="flex justify-start items-center absolute top-1/3 right-[-50%] glass-morph w-[300px] h-[50px] p-4">
+    <section class="relative min-h-screen flex flex-col items-center justify-start pt-10 w-full">
+        <div class="relative w-full flex flex-col items-center" style="overflow: visible;">
+            <h1 class="scd-font ;" id="hero-text">Haloy</h1>
+            <div class="flex justify-start items-center absolute top-[6rem] right-[10vw] glass-morph w-[300px] h-[50px] p-4">
                 <div class="text-sm font-light">
                     Votre blog de métal symphonique.
                 </div>
             </div>
-            <div class="flex justify-start items-center absolute top-2/3 left-[-40%] glass-morph w-[200px] h-[50px] p-4">
+            <div class="flex justify-start items-center absolute top-2/3 left-[10vw] glass-morph w-[200px] h-[50px] p-4">
                 <div class="text-sm font-light">
                     <a href="#insta" target="_blank" class="mx-2 text-xl">
                         <i class="fab fa-instagram"></i>
@@ -35,37 +35,16 @@
             </div>
         </div>
 
-        <div class="articles-grid w-full max-w-6xl mt-16">
+        <div class="articles-grid flex justify-center flex-wrap gap-[3.5rem] w-full max-w-6xl mt-16">
             @forelse($articles as $article)
-                <article class="article-card">
-                    <a href="{{ route('article.show', $article->id) }}">
-                        @if($article->image)
-                            <img src="{{ $article->image }}" alt="{{ $article->titre }}">
-                        @endif
-
-                        <h2>{{ $article->titre }}</h2>
-
-                        <p class="resume">{{ $article->resume }}</p>
-
-                        <div class="article-meta">
-                            <span class="auteur">Par {{ $article->editeur->name }}</span>
-                            <span class="vues">{{ $article->nb_vues }} vues</span>
-                        </div>
-
-                        @if($article->rythme)
-                            <div class="rythme">
-                                Rythme : {{ $article->rythme->texte }}
-                            </div>
-                        @endif
-                    </a>
-                </article>
+                <x-cards.article-card :article="$article" />
             @empty
                 <p>Aucun article disponible pour le moment.</p>
             @endforelse
         </div>
 
-        <div class="mt-8 text-center">
-            <a href="{{ route('articles.all') }}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <div class="mt-[2rem] text-center">
+            <a href="{{ route('articles.all') }}" class="relative inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 z-[99]">
                 Voir tous les articles
             </a>
         </div>
