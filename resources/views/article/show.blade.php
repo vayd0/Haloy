@@ -2,7 +2,7 @@
 
 @section('contenu')
 <div class="article-container">
-    <!-- Header Section -->
+    <!-- Header  -->
     <div class="article-header">
         <h1>{{ $article->titre }}</h1>
         <div class="article-meta">
@@ -24,20 +24,20 @@
         </div>
     </div>
 
-    <!-- Featured Image -->
+    <!-- Image -->
     @if ($article->image)
         <div class="article-image">
             <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}">
         </div>
     @endif
 
-    <!-- Summary Section -->
+    <!-- Sommaire -->
     <div class="article-summary">
         <h2>Résumé</h2>
         <p>{{ $article->resume }}</p>
     </div>
 
-    <!-- Characteristics Section -->
+    <!-- Section caractéristiques -->
     <div class="article-characteristics">
         <h2>Caractéristiques</h2>
         <div class="characteristics-grid">
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <!-- Audio Player Section -->
+    <!-- Section audio -->
     <div class="article-media">
         <h2>Média Audio</h2>
         <div class="audio-player-container">
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <!-- Article Content -->
+    <!-- Article -->
     <div class="article-content">
         <h2>Article complet</h2>
         <div class="article-text">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <!-- Likes Section -->
+    <!-- Section j'aime -->
     <div class="article-interactions">
         <h2>Avis des lecteurs</h2>
         <div class="likes-section">
@@ -136,7 +136,7 @@
         </div>
     </div>
 
-    <!-- Comments Section -->
+    <!-- Section commentaires -->
     <div class="article-comments">
         <h2>Commentaires ({{ $article->avis->count() }})</h2>
 
@@ -155,7 +155,7 @@
             </div>
         @endauth
 
-        <!-- Comments List -->
+        <!-- Liste des commentaires -->
         @if ($avis->count() > 0)
             <div class="comments-list">
                 @foreach ($avis as $comment)
@@ -183,7 +183,7 @@
         @endif
     </div>
 
-    <!-- Similar Articles Section -->
+    <!-- Section article similaires -->
     @if ($similarArticles->count() > 0)
         <div class="similar-articles">
             <h2>Articles similaires</h2>
