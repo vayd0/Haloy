@@ -88,6 +88,15 @@
             </select>
         </div>
 
+        <!-- Activation -->
+        <div class="form-group">
+            <label class="flex items-center">
+                <input type="hidden" name="en_ligne" value="0">
+                <input type="checkbox" name="en_ligne" value="1" class="form-checkbox h-5 w-5 text-blue-600" {{ old('en_ligne') ? 'checked' : '' }}>
+                <span class="ml-2 text-gray-700 font-bold">Mettre l'article en ligne (Activer)</span>
+            </label>
+        </div>
+
         <!-- Boutons -->
         <div class="form-actions">
             <button type="submit" class="btn-submit">Créer l'article</button>

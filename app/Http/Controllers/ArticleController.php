@@ -252,6 +252,7 @@ class ArticleController extends Controller
             'rythme_id' => 'required|exists:rythmes,id',
             'accessibilite_id' => 'required|exists:accessibilites,id',
             'conclusion_id' => 'required|exists:conclusions,id',
+            'en_ligne' => 'boolean',
         ]);
 
         // Stocker les fichiers
@@ -269,7 +270,7 @@ class ArticleController extends Controller
             'accessibilite_id' => $validated['accessibilite_id'],
             'conclusion_id' => $validated['conclusion_id'],
             'user_id' => Auth::id(),
-            'en_ligne' => false,
+            'en_ligne' => $request->has('en_ligne') ? $request->input('en_ligne') : false,
         ]);
 
         return redirect()->route('accueil')->with('success', 'Article créé avec succès!');
