@@ -1,8 +1,18 @@
+@import './theme.css';
+@import 'tailwindcss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
     position: relative;
     min-height: 100%;
 }
 body {
+    background-color: var(--bg-color);
+    color:var(--txt-color);
     /* Margin bottom by footer height */
     margin-bottom: 30px;
 }
@@ -14,23 +24,12 @@ main {
     justify-content: center;
 }
 
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-
-    /* Set the fixed height of the footer here */
-    height: 30px;
-    background-color: #f5f5f5;
-}
-
 .app-info {
     font-weight: bold;
     font-size: 1.5em;
     color: #333;
     padding: 10px;
     border: 1px solid #333;
-    border-radius: 5px;
-    box-shadow: #333333 2px 2px 2px;
+    border-radius: 5px;   border-radius: 5px;
+    box-shadow: #333333 2px 2px 2px;    box-shadow: #333333 2px 2px 2px;
 }
-
