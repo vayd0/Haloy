@@ -33,5 +33,11 @@
 </main>
 
 <footer>IUT de Lens</footer>
+    @include("partials.navbar")
+    <main>
+        @yield("contenu")
+    </main>
+    @include("partials.footer")
 </body>
+
 </html>

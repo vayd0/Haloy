@@ -1,4 +1,3 @@
-{{-- Page d'accueil : liste des articles actifs --}}
 @php use App\Models\Article; @endphp
 @extends("layout.app")
 
