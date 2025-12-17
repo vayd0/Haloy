@@ -1,13 +1,12 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AccueilController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return view('welcome');
-})->name("accueil");
+Route::get('/', [AccueilController::class, 'index'])->name("accueil");
 
 Route::get('/contact', function () {
     return view('contact');
