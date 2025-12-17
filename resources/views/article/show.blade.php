@@ -127,7 +127,6 @@
                         @if ($userLikeStatus !== null)
                             <form action="{{ route('article.unlike', $article->id) }}" method="POST" class="like-form">
                                 @csrf
-                                @method('DELETE')
                                 <button type="submit" class="btn btn-unlike">
                                     ✕ Retirer
                                 </button>
