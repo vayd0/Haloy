@@ -5,6 +5,7 @@
 }
 
 #hero-text {
-    font-size: 10rem;
+    font-size: 15vw;
     filter: drop-shadow(0 0 300px rgb(255, 255, 255,0.2));
+    overflow: visible; 
 }
