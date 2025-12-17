@@ -12,7 +12,7 @@
             inset: 0;
         }
     </style>
-    <section class="relative min-h-screen flex flex-col items-center justify-start pt-32 w-full">
+    <section class="relative min-h-screen flex flex-col items-center justify-start pt-10 w-full">
         <div class="relative w-full flex flex-col items-center" style="overflow: visible;">
             <h1 class="scd-font ;" id="hero-text">Haloy</h1>
             <div class="flex justify-start items-center absolute top-[6rem] right-[10vw] glass-morph w-[300px] h-[50px] p-4">
@@ -43,8 +43,8 @@
             @endforelse
         </div>
 
-        <div class="mt-8 text-center">
-            <a href="{{ route('articles.all') }}" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <div class="mt-[2rem] text-center">
+            <a href="{{ route('articles.all') }}" class="relative inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 z-[99]">
                 Voir tous les articles
             </a>
         </div>
