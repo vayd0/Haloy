@@ -37,6 +37,8 @@ Route::post('/users/{user}/follow', [UserController::class, 'follow'])
 // Article Routes
 Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create')->middleware('auth');
 Route::post('/article', [ArticleController::class, 'store'])->name('article.store')->middleware('auth');
+Route::get('/article/{article}/edit', [ArticleController::class, 'edit'])->name('article.edit')->middleware('auth');
+Route::put('/article/{article}', [ArticleController::class, 'update'])->name('article.update')->middleware('auth');
 Route::get('/article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::post('/article/{article}/like', [ArticleController::class, 'like'])->name('article.like')->middleware('auth');
 Route::post('/article/{article}/dislike', [ArticleController::class, 'dislike'])->name('article.dislike')->middleware('auth');
