@@ -46,7 +46,7 @@
         <!-- Média audio -->
         <div class="form-group">
             <label for="media">Média audio *</label>
-            <input type="file" id="media" name="media" accept="audio/*" required>
+            <input type="file" id="media" name="media" accept=".mp3,.wav" required>
         </div>
 
         <!-- Rythme -->

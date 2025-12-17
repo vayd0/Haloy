@@ -199,7 +199,7 @@ class ArticleController extends Controller
             'resume' => 'required|string|max:500',
             'texte' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
-            'media' => 'nullable|mimes:mp3,wav,m4a,mp4,aac|max:20480',
+            'media' => 'nullable|file|mimes:mp3,wav|max:51200',
             'rythme_id' => 'required|exists:rythmes,id',
             'accessibilite_id' => 'required|exists:accessibilites,id',
             'conclusion_id' => 'required|exists:conclusions,id',
