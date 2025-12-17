@@ -11,7 +11,7 @@
 
     <section class="flex items-center space-x-8">
         @auth
-            {{Auth::user()->name}}
+            <!--{{Auth::user()->name}}-->
             <a href="{{route('article.create')}}">Créer article</a>
             <a href="{{route("logout")}}" onclick="document.getElementById('logout').submit(); return false;">Logout</a>
             <form id="logout" action="{{route("logout")}}" method="post">
