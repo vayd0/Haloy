@@ -22,6 +22,7 @@ Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByC
 // Routes nécessitant une authentification
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/notifications/mark-all-read', [UserController::class, 'markAllNotificationsAsRead'])->name('notifications.mark-all-read');
 });
 
 // Route pour afficher la page d'un utilisateur

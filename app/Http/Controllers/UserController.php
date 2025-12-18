@@ -122,4 +122,15 @@ class UserController extends Controller
 
         return back(); // Retour à la page précédente
     }
+
+    /**
+     * Marque toutes les notifications comme lues
+     */
+    public function markAllNotificationsAsRead()
+    {
+        $user = Auth::user();
+        $user->unreadNotifications->markAsRead();
+
+        return back();
+    }
 }

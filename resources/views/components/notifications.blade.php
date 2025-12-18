@@ -17,8 +17,8 @@
         @if(auth()->check() && auth()->user()->unreadNotifications->isNotEmpty())
             <div class="flex justify-between items-center px-6 mb-4">
                 <h2 class="text-lg font-semibold text-gray-800">Nouveautés</h2>
-                {{-- Petit bonus : Lien pour tout marquer comme lu (à coder plus tard) --}}
-                <small class="text-blue-500 cursor-pointer text-xs">Tout lu</small>
+                {{-- Lien pour tout marquer comme lu --}}
+                <small class="text-blue-500 cursor-pointer text-xs" id="mark-all-read">Tout lu</small>
             </div>
 
             <div class="space-y-4 px-6 max-h-96 overflow-y-auto">
@@ -73,6 +73,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const toggle = document.getElementById('notif-dropdown-toggle');
         const menu = document.getElementById('notif-dropdown-menu');
+        const markAllReadBtn = document.getElementById('mark-all-read');
 
         if(toggle && menu) { // Petite sécurité s'ils n'existent pas sur la page
             toggle.addEventListener('click', function (e) {
@@ -93,6 +94,30 @@
 
             menu.addEventListener('click', function(e) {
                 e.stopPropagation();
+            });
+        }
+
+        // Gestion du clic sur "Tout lu"
+        if(markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Créer une requête AJAX pour marquer les notifications comme lues
+                fetch('{{ route("notifications.mark-all-read") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if(response.ok) {
+                        // Rafraîchir la page ou mettre à jour l'interface
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
             });
         }
     });
