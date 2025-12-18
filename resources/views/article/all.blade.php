@@ -10,7 +10,7 @@
                     class="glass-morph h-10 w-10 p-2 hover:scale-105 transition-all duration-300 hover:rotate-[10deg] flex justify-center items-center"
                     id="dropdown-toggle2"><i class="fa-solid fa-filter text-[20px]"></i>
                 </button>
-                <div class="absolute flex flex-col glass-morph top-[3rem] right-0 mt-2 max-h-48 overflow-y-auto w-60 rounded shadow-lg p-3 transition-all z-50 opacity-100 text-right hidden"
+                <div class="absolute flex flex-col glass-morph top-[3rem] right-0 mt-2 max-h-48 overflow-y-auto w-60 rounded shadow-lg p-3 transition-all z-50 opacity-0 text-right"
                     id="dropdown-menu2">
                     @foreach ($accessibilites as $access)
                         <a href="{{ route('accessibilite.articles', $access->id) }}">{{$access->texte}}</a>
