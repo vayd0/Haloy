@@ -46,7 +46,7 @@ Bref : une aventure nocturne minimaliste, un suspense à hauteur d’enfant, et 
                 'titre' => $faker->text(20),
                 'resume' => $faker->realTextBetween(30, 100,  2),
                 'texte' => $faker->realTextBetween(160, 500,  2),
-                'image' => "/images/article$i.png",
+                'image' => url("/images/article$i.png"),
                 'media' => 'https://comptines.tv/musiques/au_clair_de_la_lune.mp3',
                 "user_id" =>  $faker->numberBetween(1, 50),
                 "rythme_id" => $faker->numberBetween(1, 5),
