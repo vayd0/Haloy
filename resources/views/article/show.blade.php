@@ -12,7 +12,8 @@
                     @else
                         <div class="avatar-small"
                             style="background: #ccc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-                            {{ substr($article->editeur->name, 0, 1) }}</div>
+                            {{ substr($article->editeur->name, 0, 1) }}
+                        </div>
                     @endif
                     <span class="author-name">{{ $article->editeur->name }}</span>
                 </span>
@@ -31,7 +32,8 @@
 
         @if ($article->image)
             <div class="article-image">
-                <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}">
+                <img class="rounded-xl w-full max-h-[140px]" src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}"
+                    onerror="this.onerror=null;this.src='{{ $article->image }}';">
             </div>
         @endif
 
@@ -141,9 +143,9 @@
                         @csrf
                         <textarea name="contenu" rows="4" placeholder="Votre commentaire..." required></textarea>
                         @error('contenu')
-                        <div class="text-red-500 mt-2 text-sm" style="color: red;">
-                            {{ $message }}
-                        </div>
+                            <div class="text-red-500 mt-2 text-sm" style="color: red;">
+                                {{ $message }}
+                            </div>
                         @enderror
                         <button type="submit" class="btn btn-primary">Publier</button>
                     </form>

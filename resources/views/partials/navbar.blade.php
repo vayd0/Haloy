@@ -24,7 +24,6 @@
 </nav>
 <nav class="fixed top-0 w-full px-4 py-4 text-white bg-transparent z-[999] sm:hidden">
     <div class="max-w-screen-2xl mx-auto flex items-center justify-between relative">
-
         <a href="/">
             <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-16 w-16">
         </a>
@@ -35,7 +34,7 @@
             </svg>
         </button>
 
-        <div id="nav-mobile-menu" class="fixed top-0 rounded-tl-[2.5rem] right-0 h-full w-64 bg-bg-color/95 flex flex-col gap-4 pt-[3rem] px-10 text-xl
+        <div id="nav-mobile-menu" class="fixed top-0 rounded-tl-[2.5rem] right-0 h-full w-64 bg-bg-color/80 flex flex-col gap-4 pt-[3rem] px-10 text-xl
                     transform translate-x-full transition-transform duration-300 pointer-events-none z-[9999]">
             <svg class="absolute top-[-1.2rem] left-[-30%] h-48 pointer-events-none" id="Calque_1" data-name="Calque 1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1200">
