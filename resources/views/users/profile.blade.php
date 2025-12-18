@@ -2,52 +2,20 @@
 
 @section('contenu')
 
-    <section class="w-full mt-[10vh]">
-        <div class="flex justify-between w-full mx-auto px-4 py-8">
+    <section class="w-full mt-[11vh]">
+        <div class="flex justify-between items-center w-full mx-auto px-4 py-8">
             <h1 class="text-3xl font-bold mb-6">{{Auth::user()->name}}</h1>
-            {{ count(Auth::user()->suivis)  }}
-            {{ count(Auth::user()->suiveurs)  }}
-            {{ count(Auth::user()->likes)  }}
+            <x-stat-badge label="Abonnements" :value="Auth::user()->suivis->count()"
+                icon="<i class='fa-solid fa-users'></i>" />
+            <x-stat-badge label="Likes" :value="Auth::user()->likes->count()" icon="<i class='fa-solid fa-heart'></i>" />
+            <x-stat-badge label="Abonnés" :value="Auth::user()->suiveurs->count()"
+                icon="<i class='fa-solid fa-user'></i>" />
+            <x-stat-badge label="Posts" :value="Auth::user()->mesArticles()->where('en_ligne', 1) -> count()"
+                icon="<i class='fa-solid fa-music'></i>" />
             <x-notifications />
         </div>
         <div class="p-4">
-            @if(isset($suggestedUsers) && $suggestedUsers->isNotEmpty())
-                <div class="shadow-md rounded-lg p-6 mb-8">
-                    <h2 class="text-xl font-semibold mb-4">Personnes aux profils similaires</h2>
-                    <p class="text-sm text-gray-600 mb-4">Ces utilisateurs aiment les mêmes types d'articles que vous</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @foreach($suggestedUsers as $suggestedUser)
-                            <div class="bg-white border border-green-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                                <div class="flex items-center gap-3 mb-3">
-                                    @if($suggestedUser->avatar)
-                                        <img src="{{ asset('storage/' . $suggestedUser->avatar) }}" alt="{{ $suggestedUser->name }}"
-                                            class="w-12 h-12 rounded-full object-cover">
-                                    @else
-                                        <div
-                                            class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">
-                                            {{ substr($suggestedUser->name, 0, 1) }}
-                                        </div>
-                                    @endif
-                                    <div class="flex-1">
-                                        <a href="{{ route('users.show', $suggestedUser->id) }}"
-                                            class="font-semibold text-gray-800 hover:text-green-600">
-                                            {{ $suggestedUser->name }}
-                                        </a>
-                                        <p class="text-xs text-gray-500">{{ $suggestedUser->likes_count }} articles similaires</p>
-                                    </div>
-                                </div>
-                                <form action="{{ route('users.follow', $suggestedUser->id) }}" method="POST">
-                                    @csrf
-                                    <x-follow.button :user-id="$suggestedUser->id" :is-following="$suggestedUser->is_followed" />
-                                </form>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             <div class="rounded-lg mb-8">
-
                 @if($articles->isEmpty())
                     <p class="text-white">Vous n'avez aucun article publié.</p>
                 @else

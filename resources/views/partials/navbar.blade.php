@@ -1,4 +1,4 @@
-<nav class="fixed top-0 left-0 w-full px-8 py-4 text-white bg-transparent z-[999] hidden sm:block">
+<nav class="fixed top-0 left-1/2 transform -translate-x-1/2 w-[60%] mx-auto px-2 py-1 text-white bg-transparent z-[999] hidden sm:block glass-morph m-4" style="border-radius:300px;">
     <div class="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
 
         <div class="flex items-center justify-end gap-8">

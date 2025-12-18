@@ -21,12 +21,16 @@ class ArticleController extends Controller
             $query->orWhere('user_id', Auth::id());
         }
 
+        $rythmes = \App\Models\Rythme::all();
+        $accessibilites = \App\Models\Accessibilite::all();
+        $conclusions = \App\Models\Conclusion::all();
+
         $articles = $query
             ->with(['editeur', 'rythme', 'accessibilite', 'conclusion'])
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 
-        return view('article.all', compact('articles'));
+        return view('article.all', compact('articles', 'rythmes', 'accessibilites', 'conclusions'));
     }
 
     // Filtre les articles

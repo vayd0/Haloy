@@ -32,21 +32,21 @@
 @if($safeLink)
     <a href="{{ $safeLink }}" class="stat-badge inline-flex items-center p-2 rounded-md hover:bg-gray-100 transition" @if($external) target="_blank" rel="noopener noreferrer" @endif>
         @else
-            <div class="stat-badge inline-flex items-center p-2 rounded-md">
+            <div class="relative stat-badge inline-flex items-center p-4 rounded-md glass-morph">
                 @endif
 
                 {{-- Icon: si fourni en slot nommé, l'utiliser ; sinon afficher l'icône prop --}}
                 @hasSection('icon')
-                    <span class="stat-icon mr-2">@yield('icon')</span>
+                    <span class="absolute top-[-1rem] right-[-1rem] stat-icon mr-2 text-[1rem] p-2 glass-morph">@yield('icon')</span>
                 @elseif($iconIsSafeHtml)
-                    <span class="stat-icon mr-2">{!! $safeIconHtml !!}</span>
+                    <span class="absolute top-[-1rem] right-[-1rem] stat-icon mr-2 text-[1rem] p-2 glass-morph">{!! $safeIconHtml !!}</span>
                 @elseif($icon !== null)
-                    <span class="stat-icon mr-2">{{ $icon }}</span>
+                    <span class="absolute top-[-1rem] right-[-1rem] stat-icon mr-2 text-[1rem] p-2 glass-morph">{{ $icon }}</span>
                 @endif
 
-                <div class="stat-content text-left">
+                <div class="stat-content text-left flex justify-between gap-3 items-center">
                     <div class="stat-value text-lg font-semibold">{{ $displayValue }}</div>
-                    <div class="stat-label text-sm text-gray-500">{{ $label }}</div>
+                    <div class="stat-label text-sm text-white">{{ $label }}</div>
                 </div>
 
             @if($safeLink)

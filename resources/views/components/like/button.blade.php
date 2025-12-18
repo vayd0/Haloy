@@ -1,4 +1,4 @@
-@props(['articleId', 'userLikeStatus' => null])
+@props(['articleId', 'userLikeStatus' => null, 'likesCount', 'dislikesCount'])
 
 @auth
     <div class="like-actions">
@@ -6,7 +6,7 @@
             @csrf
             <input type="hidden" name="nature" value="1">
             <button type="submit" class="btn btn-like {{ $userLikeStatus === true ? 'active' : '' }}">
-                👍 J'aime
+                👍 {{ $likesCount }}
             </button>
         </form>
 
@@ -14,7 +14,7 @@
             @csrf
             <input type="hidden" name="nature" value="0">
             <button type="submit" class="btn btn-dislike {{ $userLikeStatus === false ? 'active' : '' }}">
-                👎 Je n'aime pas
+                👎 {{ $dislikesCount }}
             </button>
         </form>
 
