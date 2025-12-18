@@ -5,6 +5,9 @@
     <section class="w-full mt-[10vh]">
         <div class="flex justify-between w-full mx-auto px-4 py-8">
             <h1 class="text-3xl font-bold mb-6">{{Auth::user()->name}}</h1>
+            {{ count(Auth::user()->suivis)  }}
+            {{ count(Auth::user()->suiveurs)  }}
+            {{ count(Auth::user()->likes)  }}
             <x-notifications />
         </div>
         <div class="p-4">

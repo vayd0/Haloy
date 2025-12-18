@@ -3,56 +3,91 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Article;
+use App\Models\Rythme;
+use App\Models\Accessibilite;
+use App\Models\Conclusion;
+use App\Notifications\NewArticlePublished;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class UsersSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // On prépare le mot de passe une seule fois pour gagner du temps
         $hash = Hash::make('azerty');
+        $faker = Factory::create('fr_FR');
 
-        // 1. CRÉATION DE "LES INROCKS" (Ton compte principal auteur)
-        // On stocke l'utilisateur dans la variable $inrocks pour l'utiliser plus bas
-        $inrocks = User::factory()->create([
-            'name' => "Les Inrocks",
-            'email' => "inrocks@gmail.com",
+        // 0. Catégories
+        $rythme = Rythme::firstOrCreate(['texte' => 'Lent'], ['texte' => 'Lent']);
+        $access = Accessibilite::firstOrCreate(['texte' => 'Facile'], ['texte' => 'Facile']);
+        $concl = Conclusion::firstOrCreate(['texte' => 'Ouverte'], ['texte' => 'Ouverte']);
+
+        // 1. CRÉATION DE "LES INROCKS"
+        $inrocks = User::firstOrCreate(
+            ['email' => 'inrocks@gmail.com'],
+            [
+                'name' => "Les Inrocks",
+                'email_verified_at' => now(),
+                'password' => $hash,
+            ]
+        );
+
+        $this->command->info('Compte Inrocks prêt.');
+
+        // 2. CRÉATION DES USERS LAMBDA
+        // On crée user1 spécifiquement pour le scénario
+        $user1 = User::factory()->create([
+            'name' => 'John Lennon',
+            'email' => "user1@gmail.com",
             'email_verified_at' => now(),
             'password' => $hash,
         ]);
 
-        $this->command->info('Utilisateur "inrocks@gmail.com" créé !');
-
-        // 2. CRÉATION DES 50 FOLLOWERS (user1 à user50)
-        for ($i = 1; $i <= 50; $i++) {
-            $follower = User::factory()->create([
+        // On crée les 49 autres
+        for ($i = 2; $i <= 50; $i++) {
+            User::factory()->create([
                 'name' => 'user' . $i,
-                'email' => "user{$i}@gmail.com", // Syntaxe propre pour user1@gmail.com
-                'email_verified_at' => now(),
+                'email' => "user{$i}@gmail.com",
                 'password' => $hash,
             ]);
-
-            // --- L'ASTUCE POUR TON TEST ---
-            // On force TOUS ces utilisateurs à s'abonner à "inrocks"
-            $follower->suivis()->attach($inrocks->id);
         }
 
-        $this->command->info('50 utilisateurs créés et abonnés à Inrocks.');
+        // 3. LE SCÉNARIO "5 NOTIFICATIONS"
 
-        // 3. (OPTIONNEL) BRUIT DE FOND : Des abonnements aléatoires entre les autres
-        // Pour que ça fasse "vrai réseau social"
-        $faker = Factory::create('fr_FR');
-        $allUsers = User::where('id', '!=', $inrocks->id)->get(); // Tous sauf inrocks
+        // A. Inrocks s'abonne à John Lennon (user1)
+        $inrocks->suivis()->attach($user1->id);
 
-        foreach($allUsers as $user) {
-            // Chaque user suit entre 0 et 5 autres personnes au hasard (sauf inrocks qu'il suit déjà)
-            $randomUsers = $allUsers->random(rand(0, 5))->pluck('id');
-            $user->suivis()->syncWithoutDetaching($randomUsers);
+        // B. John Lennon publie 5 articles d'un coup
+        $this->command->info('Génération des 5 articles et envoi des notifs...');
+
+        for ($j = 1; $j <= 5; $j++) {
+            $dateFictive = $faker->dateTimeBetween('-1 year', '-1 week');
+
+            $article = Article::create([
+                'titre' => "Article Exclusif N°" . $j,
+                'resume' => "Voici le résumé de l'actualité numéro " . $j,
+                'texte' => $faker->paragraph(3),
+
+                // 2. IMAGE ALEATOIRE : On pioche entre articles1.png et articles50.png
+                'image' => 'images/articles' . rand(1, 50) . '.png',
+
+                'media' => 'articles/default.mp3',
+                'rythme_id' => $rythme->id,
+                'accessibilite_id' => $access->id,
+                'conclusion_id' => $concl->id,
+                'user_id' => $user1->id,
+                'en_ligne' => true,
+
+                // 3. ON FORCE LA DATE
+                'created_at' => $dateFictive,
+                'updated_at' => $dateFictive,
+            ]);
+            Notification::send($inrocks, new NewArticlePublished($article));
         }
+
+        $this->command->info('TERMINE : inrocks@gmail.com a 5 notifs !');
     }
 }
