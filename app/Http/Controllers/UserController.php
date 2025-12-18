@@ -18,7 +18,11 @@ class UserController extends Controller
         $notifications = $user->unreadNotifications ?? collect();
 
         // Trouver des utilisateurs similaires
-        $suggestedUsers = $this->findSimilarUsers($user);
+        try {
+            $suggestedUsers = $this->findSimilarUsers($user);
+        } catch (\Exception $e) {
+            $suggestedUsers = collect();
+        }
 
         return view('users.profile', compact('articles', 'notifications', 'suggestedUsers'));
     }

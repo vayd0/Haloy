@@ -1,35 +1,44 @@
-@import './theme.css';
-@import 'tailwindcss';
-@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import "./theme.css";
+@import "./article.css";
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-    position: relative;
-    min-height: 100%;
+html, body {
+  position: relative;
+  min-height: 100%;
+  background-color: var(--color-bg-color);
+  color: var(--color-txt-color);
 }
-body {
-    background-color: var(--bg-color);
-    color:var(--txt-color);
-    /* Margin bottom by footer height */
-    margin-bottom: 30px;
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #0f0f0f;
+  filter: url(#noise);
+  opacity: 0.05;
+  pointer-events: none;
 }
 
 main {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .app-info {
-    font-weight: bold;
-    font-size: 1.5em;
-    color: #333;
-    padding: 10px;
-    border: 1px solid #333;
-    border-radius: 5px;   border-radius: 5px;
-    box-shadow: #333333 2px 2px 2px;    box-shadow: #333333 2px 2px 2px;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: #333333 2px 2px 2px;
+  box-shadow: #333333 2px 2px 2px;
 }

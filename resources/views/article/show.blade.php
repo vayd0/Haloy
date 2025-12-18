@@ -1,28 +1,31 @@
 @extends("layout.app")
 
 @section('contenu')
-    <div class="article-container">
+    <div class="article-container pt-[10rem]">
         <div class="article-header">
-            <h1>{{ $article->titre }}</h1>
+            <h1 class="title">{{ $article->titre }}</h1>
             <div class="article-meta">
-            <span class="author-info">
-                @if ($article->editeur->avatar)
-                    <img src="{{ asset('storage/' . $article->editeur->avatar) }}" alt="{{ $article->editeur->name }}" class="avatar-small">
-                @else
-                    <div class="avatar-small" style="background: #ccc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">{{ substr($article->editeur->name, 0, 1) }}</div>
-                @endif
-                <span class="author-name">{{ $article->editeur->name }}</span>
-            </span>
+                <span class="author-info">
+                    @if ($article->editeur->avatar)
+                        <img src="{{ asset('storage/' . $article->editeur->avatar) }}" alt="{{ $article->editeur->name }}"
+                            class="avatar-small">
+                    @else
+                        <div class="avatar-small"
+                            style="background: #ccc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            {{ substr($article->editeur->name, 0, 1) }}</div>
+                    @endif
+                    <span class="author-name">{{ $article->editeur->name }}</span>
+                </span>
                 <span class="article-date">
-                @if ($article->updated_at != $article->created_at)
+                    @if ($article->updated_at != $article->created_at)
                         Modifié le {{ $article->updated_at->format('d/m/Y à H:i') }}
                     @else
                         Publié le {{ $article->created_at->format('d/m/Y à H:i') }}
                     @endif
-            </span>
+                </span>
                 <span class="article-views">
-                 {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
-            </span>
+                    {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
+                </span>
             </div>
         </div>
 
@@ -45,7 +48,8 @@
                         <a href="{{ route('rythme.articles', $article->rythme->id) }}">
                             <h3>{{ $article->rythme->texte }}</h3>
                             @if ($article->rythme->image)
-                                <img src="{{ asset('storage/' . $article->rythme->image) }}" alt="Rythme: {{ $article->rythme->texte }}">
+                                <img src="{{ asset('storage/' . $article->rythme->image) }}"
+                                    alt="Rythme: {{ $article->rythme->texte }}">
                             @endif
                             <p class="characteristic-label">Rythme</p>
                         </a>
@@ -57,7 +61,8 @@
                         <a href="{{ route('accessibilite.articles', $article->accessibilite->id) }}">
                             <h3>{{ $article->accessibilite->texte }}</h3>
                             @if ($article->accessibilite->image)
-                                <img src="{{ asset('storage/' . $article->accessibilite->image) }}" alt="Accessibilité: {{ $article->accessibilite->texte }}">
+                                <img src="{{ asset('storage/' . $article->accessibilite->image) }}"
+                                    alt="Accessibilité: {{ $article->accessibilite->texte }}">
                             @endif
                             <p class="characteristic-label">Accessibilité</p>
                         </a>
@@ -69,7 +74,8 @@
                         <a href="{{ route('conclusion.articles', $article->conclusion->id) }}">
                             <h3>{{ $article->conclusion->texte }}</h3>
                             @if ($article->conclusion->image)
-                                <img src="{{ asset('storage/' . $article->conclusion->image) }}" alt="Conclusion: {{ $article->conclusion->texte }}">
+                                <img src="{{ asset('storage/' . $article->conclusion->image) }}"
+                                    alt="Conclusion: {{ $article->conclusion->texte }}">
                             @endif
                             <p class="characteristic-label">Conclusion</p>
                         </a>
@@ -100,12 +106,12 @@
             <h2>Avis des lecteurs</h2>
             <div class="likes-section">
                 <div class="like-stats">
-                <span class="like-count">
-                    <strong>👍 {{ $likesCount }}</strong> J'aime
-                </span>
+                    <span class="like-count">
+                        <strong>👍 {{ $likesCount }}</strong> J'aime
+                    </span>
                     <span class="dislike-count">
-                    <strong>👎 {{ $dislikesCount }}</strong> Je n'aime pas
-                </span>
+                        <strong>👎 {{ $dislikesCount }}</strong> Je n'aime pas
+                    </span>
                 </div>
 
                 @auth
@@ -155,7 +161,8 @@
                             <div class="comment-header">
                                 <div class="comment-author">
                                     @if ($comment->user->avatar)
-                                        <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}" class="avatar-small">
+                                        <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}"
+                                            class="avatar-small">
                                     @endif
                                     <strong>{{ $comment->user->name }}</strong>
                                     <span class="comment-date">{{ $comment->created_at->format('d/m/Y à H:i') }}</span>
