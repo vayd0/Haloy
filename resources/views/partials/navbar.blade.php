@@ -2,8 +2,8 @@
     <div class="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
 
         <div class="flex items-center justify-end gap-8">
-            <a href="/articles">Articles</a>
-            <a href="/contact">Contact</a>
+            <a href="{{route('articles.all')}}">Articles</a>
+            <a href="{{route('contact')}}">Contact</a>
         </div>
 
         <a class="flex justify-center mx-10" href="/">
