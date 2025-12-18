@@ -90,7 +90,7 @@
 
         <div class="article-content">
             <h2>Article complet</h2>
-            {{-- MODIFICATION ICI : Utilisation de @markdown et de la classe prose pour le style --}}
+            {{-- Utilisation de @markdown et de la classe prose pour le style --}}
             <div class="article-text prose max-w-none">
                 @markdown($article->texte)
             </div>
@@ -109,30 +109,8 @@
                 </div>
 
                 @auth
-                    <div class="like-actions">
-                        <form action="{{ route('article.like', $article->id) }}" method="POST" class="like-form">
-                            @csrf
-                            <input type="hidden" name="nature" value="1">
-                            <button type="submit" class="btn btn-like {{ $userLikeStatus === true ? 'active' : '' }}">
-                                👍 J'aime
-                            </button>
-                        </form>
-                        <form action="{{ route('article.dislike', $article->id) }}" method="POST" class="like-form">
-                            @csrf
-                            <input type="hidden" name="nature" value="0">
-                            <button type="submit" class="btn btn-dislike {{ $userLikeStatus === false ? 'active' : '' }}">
-                                👎 Je n'aime pas
-                            </button>
-                        </form>
-                        @if ($userLikeStatus !== null)
-                            <form action="{{ route('article.unlike', $article->id) }}" method="POST" class="like-form">
-                                @csrf
-                                <button type="submit" class="btn btn-unlike">
-                                    ✕ Retirer
-                                </button>
-                            </form>
-                        @endif
-                    </div>
+                    {{-- Utilisation du composant like-button --}}
+                    <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus" />
                 @else
                     <div class="login-prompt">
                         <p><a href="{{ route('login') }}">Connectez-vous</a> pour voter sur cet article</p>
@@ -157,9 +135,9 @@
                         @csrf
                         <textarea name="contenu" rows="4" placeholder="Votre commentaire..." required></textarea>
                         @error('contenu')
-                            <div class="text-red-500 mt-2 text-sm" style="color: red;">
-                                {{ $message }}
-                            </div>
+                        <div class="text-red-500 mt-2 text-sm" style="color: red;">
+                            {{ $message }}
+                        </div>
                         @enderror
                         <button type="submit" class="btn btn-primary">Publier</button>
                     </form>
