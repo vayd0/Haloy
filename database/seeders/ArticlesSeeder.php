@@ -30,7 +30,7 @@ Bref : une aventure nocturne minimaliste, un suspense à hauteur d’enfant, et 
             'titre' => $titre,
             'resume' => $resume,
             'texte' => $texte,
-            'image' => '/images/au-clair-de-la-lune.jpg',
+            'image' => url('/images/au-clair-de-la-lune.jpg'),
             'media' => 'https://comptines.tv/musiques/au_clair_de_la_lune.mp3',
             "en_ligne" => 1,
             "nb_vues" => 50,
