@@ -1,100 +1,146 @@
-@extends('layout.app')
+@extends("layout.app")
 
 @section('contenu')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">Modifier l'article</h1>
-
-        <form action="{{ route('article.update', $article) }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <section class="relative flex flex-col items-center p-5 pt-[20vh] min-h-[100vh]">
+        <form id="articleForm" action="{{ route('article.update', $article) }}" method="POST" enctype="multipart/form-data"
+            class="w-full max-w-4xl mx-auto flex-1 flex flex-col">
             @csrf
             @method('PUT')
+            @if ($errors->any())
+                <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                    <h3 class="font-bold mb-2">Erreurs :</h3>
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="titre">
-                    Titre
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="titre" type="text" name="titre" value="{{ old('titre', $article->titre) }}" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="resume">
-                    Résumé
-                </label>
-                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="resume" name="resume" rows="3" required>{{ old('resume', $article->resume) }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="texte">
-                    Contenu
-                </label>
-                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="texte" name="texte" rows="10" required>{{ old('texte', $article->texte) }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
-                    Image (laisser vide pour conserver l'actuelle)
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="image" type="file" name="image" accept="image/*">
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="media">
-                    Média audio (laisser vide pour conserver l'actuel)
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="media" type="file" name="media" accept=".mp3,.wav">
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="rythme_id">
-                        Rythme
-                    </label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="rythme_id" name="rythme_id" required>
-                        @foreach($rythmes as $rythme)
-                            <option value="{{ $rythme->id }}" {{ old('rythme_id', $article->rythme_id) == $rythme->id ? 'selected' : '' }}>{{ $rythme->texte }}</option>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 glass-morph p-4 flex-1">
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="titre" class="text-sm text-gray-200 mb-1">Titre *</label>
+                    <input class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none" type="text" id="titre"
+                        name="titre" value="{{ old('titre', $article->titre) }}" placeholder="Titre de l'article" required>
+                </div>
+                <div
+                    class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1 sm:col-span-2 md:col-span-2">
+                    <label for="resume" class="text-sm text-gray-200 mb-1">Résumé *</label>
+                    <textarea class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none" id="resume"
+                        name="resume" rows="3" placeholder="Résumé" required>{{ old('resume', $article->resume) }}</textarea>
+                </div>
+                <div
+                    class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1 sm:col-span-2 md:col-span-3">
+                    <label for="texte" class="text-sm text-gray-200 mb-1">Texte *</label>
+                    <textarea id="texte" name="texte" rows="8" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none"
+                        placeholder="Tout commence par quelques mots...">{{ old('texte', $article->texte) }}</textarea>
+                </div>
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="rythme_id" class="text-sm text-gray-200">Rythme *</label>
+                    <select id="rythme_id" name="rythme_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
+                        <option value="">-- Sélectionner --</option>
+                        @foreach ($rythmes as $rythme)
+                            <option value="{{ $rythme->id }}" {{ old('rythme_id', $article->rythme_id) == $rythme->id ? 'selected' : '' }}>
+                                {{ $rythme->texte }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-
-                <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="accessibilite_id">
-                        Accessibilité
-                    </label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="accessibilite_id" name="accessibilite_id" required>
-                        @foreach($accessibilites as $accessibilite)
-                            <option value="{{ $accessibilite->id }}" {{ old('accessibilite_id', $article->accessibilite_id) == $accessibilite->id ? 'selected' : '' }}>{{ $accessibilite->texte }}</option>
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="accessibilite_id" class="text-sm text-gray-200">Accessibilité *</label>
+                    <select id="accessibilite_id" name="accessibilite_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
+                        <option value="">-- Sélectionner --</option>
+                        @foreach ($accessibilites as $accessibilite)
+                            <option value="{{ $accessibilite->id }}" {{ old('accessibilite_id', $article->accessibilite_id) == $accessibilite->id ? 'selected' : '' }}>
+                                {{ $accessibilite->texte }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-
-                <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="conclusion_id">
-                        Conclusion
-                    </label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="conclusion_id" name="conclusion_id" required>
-                        @foreach($conclusions as $conclusion)
-                            <option value="{{ $conclusion->id }}" {{ old('conclusion_id', $article->conclusion_id) == $conclusion->id ? 'selected' : '' }}>{{ $conclusion->texte }}</option>
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="conclusion_id" class="text-sm text-gray-200">Conclusion *</label>
+                    <select id="conclusion_id" name="conclusion_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
+                        <option value="">-- Sélectionner --</option>
+                        @foreach ($conclusions as $conclusion)
+                            <option value="{{ $conclusion->id }}" {{ old('conclusion_id', $article->conclusion_id) == $conclusion->id ? 'selected' : '' }}>
+                                {{ $conclusion->texte }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
-            </div>
-
-            <div class="mb-6">
-                <label class="flex items-center">
-                    <input type="hidden" name="en_ligne" value="0">
-                    <input type="checkbox" name="en_ligne" value="1" class="form-checkbox h-5 w-5 text-blue-600" {{ old('en_ligne', $article->en_ligne) ? 'checked' : '' }}>
-                    <span class="ml-2 text-gray-700 font-bold">Mettre l'article en ligne (Activer)</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Mettre à jour
-                </button>
-                <a href="{{ route('article.show', $article) }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                    Annuler
-                </a>
+                <div class="rounded-xl flex flex-col gap-2">
+                    <label for="image" class="text-sm text-gray-200 mb-1">Photo d'accroche</label>
+                    @if($article->image)
+                        <div class="mb-2">
+                            <span class="text-xs text-gray-400">Image actuelle :</span><br>
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="Image actuelle" class="max-h-32 rounded-lg mt-1">
+                        </div>
+                    @endif
+                    <label for="image"
+                        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer bg-white/10 hover:bg-white/20 transition">
+                        <i class="fa-solid fa-image text-[2rem] text-redc/50"></i>
+                        <input type="file" id="image" name="image" accept="image/*" class="hidden">
+                        <span class="text-xs text-gray-400 mt-2">Laisser vide pour conserver l'actuelle</span>
+                    </label>
+                </div>
+                <div class="rounded-xl flex flex-col gap-2">
+                    <label for="media" class="text-sm text-gray-200 mb-1">Média audio</label>
+                    @if($article->media)
+                        <div class="mb-2">
+                            <span class="text-xs text-gray-400">Audio actuel :</span><br>
+                            <audio controls class="mt-1">
+                                <source src="{{ asset('storage/' . $article->media) }}">
+                                Votre navigateur ne supporte pas l'audio.
+                            </audio>
+                        </div>
+                    @endif
+                    <label for="media"
+                        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer bg-white/10 hover:bg-white/20 transition">
+                        <i class="fa-solid fa-music text-[2rem] text-redc/50"></i>
+                        <input type="file" id="media" name="media" accept=".mp3,.wav" class="hidden">
+                        <span class="text-xs text-gray-400 mt-2">Laisser vide pour conserver l'actuel</span>
+                    </label>
+                </div>
+                <div class="rounded-xl flex items-center gap-2 shadow-lg">
+                    <div class="hidden">
+                        <input type="hidden" name="en_ligne" value="0">
+                        <input type="checkbox" id="en_ligne" name="en_ligne" value="1" class="form-checkbox h-5 w-5 text-blue-600" {{ old('en_ligne', $article->en_ligne) ? 'checked' : '' }}>
+                        <span class="text-gray-200 text-sm">Mettre l'article en ligne (Activer)</span>
+                    </div>
+                    <div class="w-full flex flex-row gap-4 justify-center items-end shadow-none">
+                        <button type="submit"
+                            class="h-12 w-12 glass-morph flex justify-center items-center rounded-full bg-redc/60 text-white font-bold cursor-pointer hover:bg-redc transition"
+                            title="Valider">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <a href="{{ route('article.show', $article) }}"
+                            class="h-12 w-12 glass-morph flex justify-center items-center rounded-full bg-gray-500/60 text-white font-bold cursor-pointer hover:bg-gray-700 transition text-center"
+                            title="Annuler">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </form>
-    </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('articleForm');
+            const enLigneCheckbox = document.getElementById('en_ligne');
+            form.addEventListener('submit', function (e) {
+                if (!enLigneCheckbox.checked) {
+                    e.preventDefault();
+                    if (confirm("Voulez-vous mettre l'article en ligne ?")) {
+                        enLigneCheckbox.checked = true;
+                    }
+                    form.submit();
+                }
+            });
+        });
+    </script>
 @endsection
 

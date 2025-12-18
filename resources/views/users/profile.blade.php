@@ -43,10 +43,10 @@
                 </div>
             @endif
 
-            <div class="glass-morph shadow-md rounded-lg p-6 mb-8">
+            <div class="rounded-lg mb-8">
 
                 @if($articles->isEmpty())
-                    <p class="text-gray-600">Vous n'avez aucun article en cours de rédaction.</p>
+                    <p class="text-white">Vous n'avez aucun article en cours de rédaction.</p>
                 @else
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach($articles as $article)
