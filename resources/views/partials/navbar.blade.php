@@ -53,7 +53,7 @@
 
             @auth
                 <a href="{{ route('article.create') }}" class="nav-link rotate-[2deg]">Créer article</a>
-                <a href="{{ "profile" }}" class="nav-link hover:bg-gray-100 rotate-[-2deg]">Profil</a>
+                <a href="{{ route('profile') }}" class="nav-link hover:bg-gray-100 rotate-[-2deg]">Profil</a>
                 <a href="{{ route('logout') }}" onclick="document.getElementById('logout').submit(); return false;"
                     class="nav-link hover:bg-gray-100 text-redc rotate-[2deg]">Déconnexion</a>
                 <form id="logout" action="{{ route('logout') }}" method="post" class="hidden">
