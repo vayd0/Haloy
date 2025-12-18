@@ -239,13 +239,11 @@
         const currentTime = document.getElementById('current-time');
         const duration = document.getElementById('duration');
 
-        // Met à jour la durée totale quand le média est chargé
         audio.addEventListener('loadedmetadata', function () {
             seekBar.max = Math.floor(audio.duration);
             duration.textContent = formatTime(audio.duration);
         });
 
-        // Play/Pause avec changement d'icône
         playPause.addEventListener('click', function () {
             if (audio.paused) {
                 audio.play();
@@ -256,18 +254,15 @@
             }
         });
 
-        // Mise à jour de la barre de progression et du temps courant
         audio.addEventListener('timeupdate', function () {
             seekBar.value = Math.floor(audio.currentTime);
             currentTime.textContent = formatTime(audio.currentTime);
         });
 
-        // Seek
         seekBar.addEventListener('input', function () {
             audio.currentTime = seekBar.value;
         });
 
-        // Remet l'icône Play à la fin
         audio.addEventListener('ended', function () {
             playImg.src = "{{ asset('images/Play.png') }}";
         });
