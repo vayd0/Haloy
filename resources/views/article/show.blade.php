@@ -25,7 +25,7 @@
                 <h1 class="title text-2xl md:text-[2.5rem] font-bold break-words">{{ $article->titre }}</h1>
                 <div class="article-meta flex flex-col md:flex-row gap-1 md:justify-between w-full">
                     <span class="author-info text-white">
-                        <span class="author-name">{{ $article->editeur->name }}</span>
+                        <a class="author-name hover:underline" href="{{ route("users.show", $article->editeur->id) }}" class="mb-4">{{ $article->editeur->name }}</a>
                     </span>
                     <span class="article-date text-white text-sm">
                         @if ($article->updated_at != $article->created_at)
@@ -106,7 +106,8 @@
                         <div class="comment glass-morph p-6 mt-4">
                             <div class="comment-header">
                                 <div class="comment-author flex justify-between items-center">
-                                    <strong class="mb-4">{{ $comment->user->name }}</strong>
+                                    <a href="{{ route("users.show", $comment->user->id) }}"
+                                        class="mb-4 hover:underline">{{ $comment->user->name }}</a>
                                     <span class="comment-date">{{ $comment->created_at->format('d/m/Y à H:i') }}</span>
                                 </div>
                             </div>
