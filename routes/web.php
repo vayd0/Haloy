@@ -19,8 +19,7 @@ Route::get('/test-vite', function () {
 })->name("test-vite");
 
 // Routes pour l'affichage des articles (accueil et filtres)
-Route::get('/home', [ArticleController::class, 'index'])->name("home");
-Route::get('/articles', [ArticleController::class, 'allArticles'])->name('articles.all');
+Route::get('/articles', [ArticleController::class, 'index'])->name("articles.all");
 Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByCharacteristic'])->name('articles.filter');
 
 // Routes nécessitant une authentification

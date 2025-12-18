@@ -29,8 +29,3 @@ body {
     font-size: 48px;
     font-family: 'Redacted Script', serif;
 }
-
-.container {
-    max-width: 1024px;
-    margin: 10px auto;
-}
