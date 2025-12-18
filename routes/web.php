@@ -4,15 +4,16 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\CaracteristiqueController;
+use App\Http\Controllers\ContactController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [AccueilController::class, 'index'])->name("accueil");
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name("contact");
+// Routes pour les contacts
+Route::get('/contact', [ContactController::class, 'index'])->name("contact");
+Route::post('/contact', [ContactController::class, 'store'])->name("contact.store");
 
 // Routes pour l'affichage des articles (accueil et filtres)
 Route::get('/articles', [ArticleController::class, 'index'])->name("articles.all");
