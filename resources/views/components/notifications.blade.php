@@ -1,6 +1,6 @@
 <div class="relative">
     <button type="button" class="h-10 w-10 glass-morph flex items-center justify-center relative transition-all duration-300 hover:rotate-[10deg] hover:scale-105" id="notif-dropdown-toggle">
-        <i class="fa-solid fa-bell text-gray-600"></i> {{-- J'ai ajouté une couleur à l'icône --}}
+        <i class="fa-solid fa-bell text-white"></i> {{-- J'ai ajouté une couleur à l'icône --}}
 
         {{-- CORRECTION 1 : On vérifie l'auth et on compte directement --}}
         @if(auth()->check() && auth()->user()->unreadNotifications->count() > 0)

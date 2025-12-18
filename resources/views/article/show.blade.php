@@ -32,8 +32,8 @@
 
         @if ($article->image)
             <div class="article-image">
-                <img class="rounded-xl w-full max-h-[140px]" src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}"
-                    onerror="this.onerror=null;this.src='{{ $article->image }}';">
+                <img class="rounded-xl w-full max-h-[140px]" src="{{ asset('storage/' . $article->image) }}"
+                    alt="{{ $article->titre }}" onerror="this.onerror=null;this.src='{{ $article->image }}';">
             </div>
         @endif
 
@@ -87,18 +87,21 @@
         </div>
 
         <div class="article-media">
-            <h2>Média Audio</h2>
             <div class="audio-player-container">
-                <audio controls class="audio-player">
-                    <source src="{{ asset('storage/' . $article->media) }}" type="audio/mpeg">
-                    Votre navigateur ne supporte pas l'élément audio.
-                </audio>
+                <div id="custom-audio-player" class="custom-audio-player">
+                    <button id="play-pause" class="play"><img src="{{ asset('images/Play.png') }}" alt=""></button>
+                    <div>
+                        <span class="text-redc" id="current-time">0:00</span> /
+                        <span class="text-redc" id="duration">0:00</span>
+                        <input type="range" id="seek-bar" value="0" min="0" step="1">
+                    </div>
+                    <audio id="audio" src="{{  $article->media }}"></audio>
+                </div>
             </div>
         </div>
 
         <div class="article-content">
             <h2>Article complet</h2>
-            {{-- Utilisation de @markdown et de la classe prose pour le style --}}
             <div class="article-text prose max-w-none">
                 @markdown($article->texte)
             </div>
@@ -117,7 +120,6 @@
                 </div>
 
                 @auth
-                    {{-- Utilisation du composant like-button --}}
                     <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus" />
                 @else
                     <div class="login-prompt">
@@ -211,3 +213,69 @@
         @endif
     </div>
 @endsection
+
+<style>
+    .custom-audio-player {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f3f3f3;
+        padding: 10px 15px;
+        border-radius: 8px;
+        max-width: 400px;
+    }
+
+    #seek-bar {
+        flex: 1;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const audio = document.getElementById('audio');
+        const playPause = document.getElementById('play-pause');
+        const playImg = playPause.querySelector('img');
+        const seekBar = document.getElementById('seek-bar');
+        const currentTime = document.getElementById('current-time');
+        const duration = document.getElementById('duration');
+
+        // Met à jour la durée totale quand le média est chargé
+        audio.addEventListener('loadedmetadata', function () {
+            seekBar.max = Math.floor(audio.duration);
+            duration.textContent = formatTime(audio.duration);
+        });
+
+        // Play/Pause avec changement d'icône
+        playPause.addEventListener('click', function () {
+            if (audio.paused) {
+                audio.play();
+                playImg.src = "{{ asset('images/Stop.png') }}";
+            } else {
+                audio.pause();
+                playImg.src = "{{ asset('images/Play.png') }}";
+            }
+        });
+
+        // Mise à jour de la barre de progression et du temps courant
+        audio.addEventListener('timeupdate', function () {
+            seekBar.value = Math.floor(audio.currentTime);
+            currentTime.textContent = formatTime(audio.currentTime);
+        });
+
+        // Seek
+        seekBar.addEventListener('input', function () {
+            audio.currentTime = seekBar.value;
+        });
+
+        // Remet l'icône Play à la fin
+        audio.addEventListener('ended', function () {
+            playImg.src = "{{ asset('images/Play.png') }}";
+        });
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${min}:${sec}`;
+        }
+    });
+</script>
