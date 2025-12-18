@@ -11,7 +11,7 @@
     </button>
     <div id="dropdown-menu"
         class="absolute glass-morph left-0 mt-2 w-40 rounded shadow-lg py-2 opacity-0 pointer-events-none transition-all z-50" style="border-radius:10px;">
-        <a href="{{ route('profile') }}" class="block px-4 py-2 hover:bg-gray-100">Profil</a>
+        <a href="{{ route('user.profile') }}" class="block px-4 py-2 hover:bg-gray-100">Profil</a>
         <a href="{{ route('logout') }}" onclick="document.getElementById('logout').submit(); return false;"
             class="block px-4 py-2 hover:bg-gray-100 text-redc">Déconnexion</a>
         <form id="logout" action="{{ route('logout') }}" method="post" class="hidden">
