@@ -6,7 +6,6 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 const dev = false;
 
 if (!dev) {
-  // --- CONFIGURATION SCÈNE ---
   const scene = new THREE.Scene();
   const mouse = new THREE.Vector2();
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -34,17 +33,14 @@ if (!dev) {
   dirLight.position.set(5, 10, 7);
   scene.add(dirLight);
 
-  // --- COORDONNÉES ANIMATION (modifiables facilement) ---
-  // Modifie ces deux variables pour changer l'entrée et la sortie
   const ENTRY = { position: new THREE.Vector3(0, 0.5, 8), rotation: new THREE.Euler(0.2, 0, 0) };
-  const OUT   = { position: new THREE.Vector3(0.2, 1, 0.5), rotation: new THREE.Euler(1.2, 0.5, 1) };
+  const OUT   = { position: new THREE.Vector3(0, 1, 0.5), rotation: new THREE.Euler(1.2, 0.5, 1) };
 
-  // --- CHARGEMENT DES ASSETS ---
   let vinylModel;
-  let animState = "in"; // "in", "idle", "out"
+  let animState = "in";
   let rotationSpeed = 0.14;
   let time = 0;
-  let followAmount = 1; // 1 = suit le curseur, 0 = plus du tout
+  let followAmount = 1;
 
   function setVinylCoords(coords) {
     vinylModel.position.copy(coords.position);
@@ -67,15 +63,12 @@ if (!dev) {
       vinylModel = gltf.scene;
       vinylModel.scale.setScalar(0.6);
 
-      // Centrage
       const box = new THREE.Box3().setFromObject(vinylModel);
       const center = box.getCenter(new THREE.Vector3());
       vinylModel.position.sub(center);
 
-      // Position et rotation de départ (entrée)
       setVinylCoords(ENTRY);
 
-      // Matériau chrome pur
       const chromeMat = new THREE.MeshPhysicalMaterial({
         color: 0xcccccc,
         metalness: 1,
@@ -94,7 +87,6 @@ if (!dev) {
     });
   });
 
-  // --- ANIMATION ---
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
@@ -113,17 +105,13 @@ if (!dev) {
           followAmount = 1;
         }
       } else if (animState === "idle") {
-        // Suivi du curseur (toujours fluide)
         const targetX = OUT.rotation.x + mouse.y * 0.25;
         const targetZ = OUT.rotation.z + mouse.x * 0.25;
         vinylModel.rotation.x += (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
         vinylModel.rotation.z += (targetZ - vinylModel.rotation.z) * 0.08 * followAmount;
       } else if (animState === "out") {
-        // On diminue progressivement le followAmount pour estomper le suivi du curseur
         followAmount = Math.max(0, followAmount - 0.07);
-        // On interpole la rotation et la position vers ENTRY
         animateToCoords(ENTRY, 0.05);
-        // On continue d'estomper le suivi du curseur pendant la sortie
         const targetX = OUT.rotation.x + mouse.y * 0.25;
         const targetZ = OUT.rotation.z + mouse.x * 0.25;
         vinylModel.rotation.x += (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
@@ -144,7 +132,6 @@ if (!dev) {
     renderer.render(scene, camera);
   }
 
-  // --- ÉCOUTEURS D'ÉVÉNEMENTS ---
   window.addEventListener("mousemove", (e) => {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;

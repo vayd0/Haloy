@@ -1,17 +1,6 @@
 @extends("layout.app")
 
 @section('contenu')
-    <style>
-        #scene-container {
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            background: transparent;
-            z-index: 10;
-            position: absolute;
-            inset: 0;
-        }
-    </style>
     <section class="relative min-h-screen flex flex-col items-center justify-start pt-10 w-full">
         <div class="h-[80vh] w-full">
             <div class="relative w-full h-[80vh] flex items-center justify-center">
@@ -29,7 +18,7 @@
                     <div class="absolute z-[15] inset-0" id="scene-container"></div>
                 </div>
                 <div
-                    class="flex justify-start items-center absolute top-[15rem] right-[5vw] md:right-[27vw] glass-morph w-[300px] h-[50px] p-4 z-[99]">
+                    class="flex justify-start items-center absolute top-[15rem] right-[5vw] md:right-[22vw] glass-morph w-[300px] h-[50px] p-4 z-[99]">
                     <div class="text-sm font-light">
                         Votre blog de métal symphonique.
                     </div>

@@ -1,15 +1,14 @@
 @extends("layout.app")
 
 @section('contenu')
-    <section class="create-article-container pt-[15vh]">
-        <h1 class="ml-8 mb-3 title font-[2rem]">Créer un article</h1>
-
-        <article class="p-8 glass-morph">
-
+    <section class="relative flex flex-col items-center p-5 pt-[20vh] min-h-[100vh]">
+        <form id="articleForm" action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data"
+            class="w-full max-w-4xl mx-auto flex-1 flex flex-col">
+            @csrf
             @if ($errors->any())
-                <div class="errors">
-                    <h3>Erreurs:</h3>
-                    <ul>
+                <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                    <h3 class="font-bold mb-2">Erreurs :</h3>
+                    <ul class="list-disc pl-5">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -17,53 +16,28 @@
                 </div>
             @endif
 
-            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <div class="form-group flex flex-col mb-4">
-                    <label for="titre" class="mb-2 ml-6">Titre *</label>
-                    <input class="py-2 px-6 glass-morph" type="text" id="titre" name="titre" value="{{ old('titre') }}" placeholder="Quel est le titre de votre article ?" required>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 glass-morph p-4 flex-1">
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="titre" class="text-sm text-gray-200 mb-1">Titre *</label>
+                    <input class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none" type="text" id="titre"
+                        name="titre" value="{{ old('titre') }}" placeholder="Titre de l'article" required>
                 </div>
-                <div class="form-group flex flex-col mb-4">
-                    <label for="resume" class="mb-2 ml-6">Résumé *</label>
-                    <textarea class="p-6 glass-morph" id="resume" name="resume" rows="3" placeholder="En quelques mots, c'est quoi votre article ?" required>{{ old('resume') }}</textarea>
+                <div
+                    class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1 sm:col-span-2 md:col-span-2">
+                    <label for="resume" class="text-sm text-gray-200 mb-1">Résumé *</label>
+                    <textarea class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none" id="resume"
+                        name="resume" rows="3" placeholder="Résumé" required>{{ old('resume') }}</textarea>
                 </div>
-
-                <div class="form-group flex flex-col">
-                    <label for="texte" class="mb-2 ml-6">Texte de l'article * <span
-                            style="font-weight: normal; font-size: 0.9em; color: #666;">(Format Markdown
-                            supporté)</span></label>
-
-                    <textarea id="texte" name="texte" rows="12" required class="p-6 glass-morph" 
-                        placeholder="# Votre Titre ici&#10;&#10;Un paragraphe d'introduction...&#10;&#10;## Un sous-titre&#10;- Une liste à puces&#10;- Un autre élément&#10;&#10;Un texte en **gras** et un [lien](https://google.com).">{{ old('texte') }}</textarea>
-
-                    <div
-                        style="margin-top: 8px; font-size: 0.85em; color: #555; background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <strong>Aide Markdown :</strong>
-                        <ul style="padding-left: 20px; margin: 5px 0; list-style-type: disc;">
-                            <li><code># Titre</code> pour un grand titre</li>
-                            <li><code>## Titre</code> pour un sous-titre</li>
-                            <li><code>**texte**</code> pour mettre en <strong>gras</strong></li>
-                            <li><code>*texte*</code> pour mettre en <em>italique</em></li>
-                            <li><code>- item</code> pour une liste à puces</li>
-                            <li><code>[Texte](url)</code> pour créer un lien</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="image">Photo d'accroche *</label>
-                    <input type="file" id="image" name="image" accept="image/*" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="media">Média audio *</label>
-                    <input type="file" id="media" name="media" accept=".mp3,.wav" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="rythme_id">Rythme *</label>
-                    <select id="rythme_id" name="rythme_id" required>
+                <div
+                    class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1 sm:col-span-2 md:col-span-3">
+                    <label for="texte" class="text-sm text-gray-200 mb-1">Texte *</label>
+                    <textarea id="texte" name="texte" rows="8" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none"
+                        placeholder="Tout commence par quelques mots...">{{ old('texte') }}</textarea>
+                </div>                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="rythme_id" class="text-sm text-gray-200">Rythme *</label>
+                    <select id="rythme_id" name="rythme_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
                         <option value="">-- Sélectionner --</option>
                         @foreach ($rythmes as $rythme)
                             <option value="{{ $rythme->id }}" {{ old('rythme_id') == $rythme->id ? 'selected' : '' }}>
@@ -72,10 +46,10 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="accessibilite_id">Accessibilité *</label>
-                    <select id="accessibilite_id" name="accessibilite_id" required>
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="accessibilite_id" class="text-sm text-gray-200">Accessibilité *</label>
+                    <select id="accessibilite_id" name="accessibilite_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
                         <option value="">-- Sélectionner --</option>
                         @foreach ($accessibilites as $accessibilite)
                             <option value="{{ $accessibilite->id }}" {{ old('accessibilite_id') == $accessibilite->id ? 'selected' : '' }}>
@@ -84,10 +58,10 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="conclusion_id">Conclusion *</label>
-                    <select id="conclusion_id" name="conclusion_id" required>
+                <div class="glass-morph rounded-xl p-6 flex flex-col gap-2 shadow-lg col-span-1">
+                    <label for="conclusion_id" class="text-sm text-gray-200">Conclusion *</label>
+                    <select id="conclusion_id" name="conclusion_id" required
+                        class="p-3 rounded-lg bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-redc">
                         <option value="">-- Sélectionner --</option>
                         @foreach ($conclusions as $conclusion)
                             <option value="{{ $conclusion->id }}" {{ old('conclusion_id') == $conclusion->id ? 'selected' : '' }}>
@@ -96,20 +70,57 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label class="flex items-center">
-                        <input type="hidden" name="en_ligne" value="0">
-                        <input type="checkbox" name="en_ligne" value="1" class="form-checkbox h-5 w-5 text-blue-600" {{ old('en_ligne') ? 'checked' : '' }}>
-                        <span class="ml-2 text-gray-700 font-bold">Mettre l'article en ligne (Activer)</span>
+                <div class="rounded-xl flex flex-col gap-2">
+                    <label for="image" class="text-sm text-gray-200 mb-1">Photo d'accroche *</label>
+                    <label for="image"
+                        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer bg-white/10 hover:bg-white/20 transition">
+                        <i class="fa-solid fa-image text-[2rem] text-redc/50"></i>
+                        <input type="file" id="image" name="image" accept="image/*" required class="hidden">
                     </label>
                 </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn-submit">Créer l'article</button>
-                    <a href="{{ route('accueil') }}" class="btn-cancel">Annuler</a>
+                <div class="rounded-xl flex flex-col gap-2">
+                    <label for="media" class="text-sm text-gray-200 mb-1">Média audio *</label>
+                    <label for="media"
+                        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer bg-white/10 hover:bg-white/20 transition">
+                        <i class="fa-solid fa-music text-[2rem] text-redc/50"></i>
+                        <input type="file" id="media" name="media" accept=".mp3,.wav" required class="hidden">
+                    </label>
                 </div>
-            </form>
-        </article>
+                <div class="rounded-xl flex items-center gap-2 shadow-lg">
+                    <div class="hidden">
+                        <input type="hidden" name="en_ligne" value="0">
+                        <input type="checkbox" id="en_ligne" name="en_ligne" value="1" class="form-checkbox h-5 w-5 text-blue-600" {{ old('en_ligne') ? 'checked' : '' }}>
+                        <span class="text-gray-200 text-sm">Mettre l'article en ligne (Activer)</span>
+                    </div>
+                    <div class="w-full flex flex-row gap-4 justify-center items-end">
+                        <button type="submit"
+                            class="h-12 w-12 glass-morph flex justify-center items-center rounded-full bg-redc/60 text-white font-bold cursor-pointer hover:bg-redc transition"
+                            title="Valider">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <a href="{{ route('accueil') }}"
+                            class="h-12 w-12 glass-morph flex justify-center items-center rounded-full bg-gray-500/60 text-white font-bold cursor-pointer hover:bg-gray-700 transition text-center"
+                            title="Annuler">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('articleForm');
+            const enLigneCheckbox = document.getElementById('en_ligne');
+            form.addEventListener('submit', function (e) {
+                if (!enLigneCheckbox.checked) {
+                    e.preventDefault();
+                    if (confirm("Voulez-vous mettre l'article en ligne ?")) {
+                        enLigneCheckbox.checked = true;
+                    }
+                    form.submit();
+                }
+            });
+        });
+    </script>
 @endsection

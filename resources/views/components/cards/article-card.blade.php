@@ -28,9 +28,15 @@
         <h2 class="mt-2">{{ $article->titre }}</h2>
 
         <div class="absolute z-20 bottom-[10%] w-full h-full flex items-center gap-9">
-            <span class="absolute bottom-[5px] left-0 text-left text-[12px]">Par {{ $article->editeur->name }}</span>
+            @php
+                $editorName = $article->editeur->name;
+                if (mb_strlen($editorName) > 7) {
+                    $editorName = mb_substr($editorName, 0, 7) . '...';
+                }
+            @endphp
+            <span class="absolute bottom-3.5 left-0 text-left text-[12px]">Par {{ $editorName }}</span>
             <span
-                class="absolute bottom-[5px] right-0 text-right text-[12px] p-2 glass-morph flex justify-center gap-2 items-center">
+                class="absolute bottom-[5px] right-9 text-right text-[12px] p-2 glass-morph flex justify-center gap-2 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path fill="#fff" fill-rule="evenodd"
                         d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.7 12.7 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04c-.176.35-.383.684-.618.997a12.7 12.7 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.7 12.7 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.7 12.7 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"

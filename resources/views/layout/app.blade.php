@@ -10,13 +10,15 @@
 </head>
 
 <body>
-    @include("partials.navbar")
-    @include("components.background")
-    <main>
-        @yield("contenu")
-    </main>
+<div class="container mx-auto">
+        @include("partials.navbar")
+        @include("components.background")
+        <main class="w-full mx-auto">
+            @yield("contenu")
+        </main>
 
-    @include("partials.footer")
+        @include("partials.footer")
+</div>
 </body>
 
 </html>
