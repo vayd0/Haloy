@@ -2,8 +2,8 @@
     <button type="button" class="flex items-center gap-2 px-4 py-2 glass-morph rounded hover:bg-white/20 transition"
         id="dropdown-toggle">
         <div class="flex justify-between items-center gap-2">
-            <x-avatar />
-            {{Auth::user()->name}}
+            <x-avatar :user="Auth::user()->name"/>
+            {{ Auth::user()->name }}
         </div>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M19 9l-7 7-7-7" />
