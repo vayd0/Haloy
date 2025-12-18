@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\User;
+use App\Notifications\NewArticlePublished; // Import de ta notification
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class ArticleController extends Controller
 {
-    // Affiche la liste des articles actifs (et ceux de l'utilisateur connecté)
+    // Affiche la liste des articles actifs
     public function index()
     {
         $query = Article::where('en_ligne', true);
@@ -27,8 +29,7 @@ class ArticleController extends Controller
         return view('article.all', compact('articles'));
     }
 
-
-    // Filtre les articles par caractéristique (rythme, accessibilité, conclusion)
+    // Filtre les articles
     public function filterByCharacteristic($type, $id)
     {
         $query = Article::where('en_ligne', true);
@@ -37,7 +38,6 @@ class ArticleController extends Controller
             $query->orWhere('user_id', Auth::id());
         }
 
-        // Apply filter on the base query
         $articles = $query->get()->filter(function ($article) use ($type, $id) {
             return match ($type) {
                 'rythme' => $article->rythme_id == $id,
@@ -53,22 +53,15 @@ class ArticleController extends Controller
     // Afficher l'article
     public function show(Article $article)
     {
-        // Vérifier visibilité (article publié ou auteur connecté)
         if (!$article->en_ligne && (!Auth::check() || Auth::id() !== $article->user_id)) {
             abort(404);
         }
 
-        // Incrémenter compteur vues
         $article->increment('nb_vues');
-
-        // Articles similaires
         $similarArticles = $this->getSimilarArticles($article);
-
-        // Compter likes et dislikes
         $likesCount = $article->likes()->wherePivot('nature', true)->count();
         $dislikesCount = $article->likes()->wherePivot('nature', false)->count();
 
-        // Récupérer le vote actuel de l'utilisateur
         $userLikeStatus = null;
         if (Auth::check()) {
             $userLike = $article->likes()->wherePivot('user_id', Auth::id())->first();
@@ -77,7 +70,6 @@ class ArticleController extends Controller
             }
         }
 
-        // Récupérer avis paginés
         $avis = $article->avis()->with('user')->latest()->paginate(5);
 
         return view('article.show', [
@@ -90,7 +82,6 @@ class ArticleController extends Controller
         ]);
     }
 
-    // Articles similaires (rythme, accessibilité, conclusion)
     private function getSimilarArticles(Article $article, $limit = 4)
     {
         return Article::where('id', '!=', $article->id)
@@ -106,98 +97,56 @@ class ArticleController extends Controller
             ->get();
     }
 
-    // Aimer article
     public function like(Article $article)
     {
-        if (!Auth::check()) {
-            abort(401);
-        }
-
+        if (!Auth::check()) abort(401);
         DB::table('likes')->updateOrInsert(
             ['user_id' => Auth::id(), 'article_id' => $article->id],
             ['nature' => true]
         );
-
         return redirect()->back()->with('success', 'Article aimé!');
     }
 
-    // Ne pas aimer article
     public function dislike(Article $article)
     {
-        if (!Auth::check()) {
-            abort(401);
-        }
-
+        if (!Auth::check()) abort(401);
         DB::table('likes')->updateOrInsert(
             ['user_id' => Auth::id(), 'article_id' => $article->id],
             ['nature' => false]
         );
-
         return redirect()->back()->with('success', 'Avis enregistré!');
     }
 
-    // Retirer vote
     public function unlike(Article $article)
     {
-        if (!Auth::check()) {
-            abort(401);
-        }
-
-        DB::table('likes')
-            ->where('user_id', Auth::id())
-            ->where('article_id', $article->id)
-            ->delete();
-
+        if (!Auth::check()) abort(401);
+        DB::table('likes')->where('user_id', Auth::id())->where('article_id', $article->id)->delete();
         return redirect()->back()->with('success', 'Avis retiré!');
     }
 
-    // Ajouter un commentaire
     public function addComment(Request $request, Article $article)
     {
-        if (!Auth::check()) {
-            abort(401);
-        }
-
+        if (!Auth::check()) abort(401);
         $request->validate(['contenu' => 'required|string|max:1000']);
-
-        $article->avis()->create([
-            'user_id' => Auth::id(),
-            'contenu' => $request->contenu,
-        ]);
-
+        $article->avis()->create(['user_id' => Auth::id(), 'contenu' => $request->contenu]);
         return redirect()->back()->with('success', 'Commentaire ajouté!');
     }
 
-    // Afficher le formulaire de modification
     public function edit(Article $article)
     {
-        // Vérifier que l'utilisateur est l'auteur
-        if (Auth::id() !== $article->user_id) {
-            abort(403);
-        }
-
-        // Récupérer les caractéristiques
+        if (Auth::id() !== $article->user_id) abort(403);
         $rythmes = \App\Models\Rythme::all();
         $accessibilites = \App\Models\Accessibilite::all();
         $conclusions = \App\Models\Conclusion::all();
 
-        return view('article.edit', [
-            'article' => $article,
-            'rythmes' => $rythmes,
-            'accessibilites' => $accessibilites,
-            'conclusions' => $conclusions,
-        ]);
+        return view('article.edit', compact('article', 'rythmes', 'accessibilites', 'conclusions'));
     }
 
-    // Mettre à jour l'article
+    // UPDATE : Avec Notification
     public function update(Request $request, Article $article)
     {
-        // Vérifier que l'utilisateur est l'auteur
-        if (Auth::id() !== $article->user_id) {
-            abort(403);
-        }
+        if (Auth::id() !== $article->user_id) abort(403);
 
-        // Valider les données
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
             'resume' => 'required|string|max:500',
@@ -210,57 +159,39 @@ class ArticleController extends Controller
             'en_ligne' => 'boolean',
         ]);
 
-        // Gérer l'upload de l'image si présente
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('articles', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $request->file('image')->store('articles', 'public');
         }
-
-        // Gérer l'upload du média si présent
         if ($request->hasFile('media')) {
-            $mediaPath = $request->file('media')->store('articles', 'public');
-            $validated['media'] = $mediaPath;
+            $validated['media'] = $request->file('media')->store('articles', 'public');
         }
 
-        // Vérifier si l'article passe en ligne
         $wasOffline = !$article->en_ligne;
         $willBeOnline = $request->has('en_ligne') && $request->input('en_ligne');
 
-        // Mettre à jour l'article
         $article->update($validated);
 
-        // Envoyer notification aux suiveurs si l'article passe en ligne
+        // LOGIQUE NOTIFICATION UPDATE
         if ($wasOffline && $willBeOnline) {
-            $auteur = $article->editeur;
-            $suiveurs = $auteur->suiveurs;
-
-            foreach ($suiveurs as $suiveur) {
-                $suiveur->notify(new \App\Notifications\NewArticlePublished($article));
-            }
+            $suiveurs = $article->editeur->suiveurs;
+            // On utilise la classe importée en haut
+            Notification::send($suiveurs, new NewArticlePublished($article));
         }
 
         return redirect()->route('article.show', $article)->with('success', 'Article mis à jour avec succès!');
     }
 
-    // Afficher le formulaire de création
     public function create()
     {
-        // Récupérer les caractéristiques
         $rythmes = \App\Models\Rythme::all();
         $accessibilites = \App\Models\Accessibilite::all();
         $conclusions = \App\Models\Conclusion::all();
-
-        return view('article.create', [
-            'rythmes' => $rythmes,
-            'accessibilites' => $accessibilites,
-            'conclusions' => $conclusions,
-        ]);
+        return view('article.create', compact('rythmes', 'accessibilites', 'conclusions'));
     }
 
-    // Enregistrer l'article
+    // STORE : Avec Notification
     public function store(Request $request)
     {
-        // Valider les données
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
             'resume' => 'required|string|max:500',
@@ -273,11 +204,9 @@ class ArticleController extends Controller
             'en_ligne' => 'boolean',
         ]);
 
-        // Stocker les fichiers
         $imagePath = $request->file('image')->store('articles', 'public');
         $mediaPath = $request->file('media')->store('articles', 'public');
 
-        // Créer l'article
         $article = Article::create([
             'titre' => $validated['titre'],
             'resume' => $validated['resume'],
@@ -291,14 +220,11 @@ class ArticleController extends Controller
             'en_ligne' => $request->has('en_ligne') ? $request->input('en_ligne') : false,
         ]);
 
-        // Envoyer notification aux suiveurs si l'article est en ligne
+        // LOGIQUE NOTIFICATION STORE
         if ($article->en_ligne) {
-            $auteur = Auth::user();
-            $suiveurs = $auteur->suiveurs;
-
-            foreach ($suiveurs as $suiveur) {
-                $suiveur->notify(new \App\Notifications\NewArticlePublished($article));
-            }
+            $suiveurs = Auth::user()->suiveurs;
+            // On utilise la classe importée
+            Notification::send($suiveurs, new NewArticlePublished($article));
         }
 
         return redirect()->route('accueil')->with('success', 'Article créé avec succès!');

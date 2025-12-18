@@ -9,7 +9,7 @@
             @if($articles->isEmpty())
                 <p class="text-gray-600">Aucun article disponible.</p>
             @else
-                <div class="articles-grid flex justify-around flex-wrap gap-[3.5rem] w-full mt-16">
+                <div class="articles-grid flex justify-around flex-wrap gap-[2.5rem] w-full mt-16">
                     @foreach($articles as $article)
                         <x-cards.article-card :article="$article" />
                     @endforeach
