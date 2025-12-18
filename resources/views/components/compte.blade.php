@@ -1,5 +1,5 @@
 <div class="relative">
-    <button type="button" class="flex items-center gap-2 px-4 py-2 bg-white/10 rounded hover:bg-white/20 transition"
+    <button type="button" class="flex items-center gap-2 px-4 py-2 glass-morph rounded hover:bg-white/20 transition"
         id="dropdown-toggle">
         <div class="flex justify-between items-center gap-2">
             <x-avatar />
