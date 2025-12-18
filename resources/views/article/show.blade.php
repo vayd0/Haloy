@@ -5,8 +5,9 @@
         <div class="article-header grid grid-cols-1 md:grid-cols-2 grid-rows-4 gap-6 md:gap-8 items-top">
             <div class="article-media w-full h-full">
                 <div class="audio-player-container w-full">
-                    <div id="custom-audio-player" class="custom-audio-player bg-white/50 max-w-full flex justify-between items-center"
-                        style="background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,1)), url('{{ $article -> image ?? asset('storage/' . $article->image) }}'); background-size: cover;">
+                    <div id="custom-audio-player"
+                        class="custom-audio-player bg-white/50 max-w-full flex justify-between items-center"
+                        style="background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,1)), url('{{ $article->image ?? asset('storage/' . $article->image) }}'); background-size: cover;">
                         <div class="flex justify-center items-center w-full">
                             <button id="play-pause" class="play">
                                 <img class="w-[10rem]" src="{{ asset('images/Play.png') }}" alt="">
@@ -35,7 +36,8 @@
                     </span>
                 </div>
                 <span class="article-views text-right self-end text-white mt-2 md:mt-0">
-                    <span class="w-[120px] md:w-[150px] text-right text-[12px] p-2 glass-morph flex justify-end gap-2 items-center">
+                    <span
+                        class="w-[120px] md:w-[150px] text-right text-[12px] p-2 glass-morph flex justify-end gap-2 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path fill="#fff" fill-rule="evenodd"
                                 d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.7 12.7 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04c-.176.35-.383.684-.618.997a12.7 12.7 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.7 12.7 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.7 12.7 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
@@ -47,8 +49,9 @@
             </div>
             @if ($article->image)
                 <div class="article-image row-span-2 col-span-1 flex items-center">
-                    <img class="rounded-xl w-full h-48 md:h-full object-cover shadow" src="{{ asset('storage/' . $article->image) }}"
-                        alt="{{ $article->titre }}" onerror="this.onerror=null;this.src='{{ $article->image }}';">
+                    <img class="rounded-xl w-full h-48 md:h-full object-cover shadow"
+                        src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->titre }}"
+                        onerror="this.onerror=null;this.src='{{ $article->image }}';">
                 </div>
             @endif
             <div class="article-summary">
@@ -57,53 +60,12 @@
             </div>
             <div class="article-characteristics">
                 <h2 class="text-lg font-semibold">Caractéristiques</h2>
-                <div class="characteristics-grid grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    @if($article->rythme)
-                        <div class="characteristic-card">
-                            <a href="{{ route('rythme.articles', $article->rythme->id) }}">
-                                <h3>{{ $article->rythme->texte }}</h3>
-                                @if ($article->rythme->image)
-                                    <img src="{{ asset('storage/' . $article->rythme->image) }}"
-                                        alt="Rythme: {{ $article->rythme->texte }}">
-                                @endif
-                                <p class="characteristic-label">Rythme</p>
-                            </a>
-                        </div>
-                    @endif
-
-                    @if($article->accessibilite)
-                        <div class="characteristic-card">
-                            <a href="{{ route('accessibilite.articles', $article->accessibilite->id) }}">
-                                <h3>{{ $article->accessibilite->texte }}</h3>
-                                @if ($article->accessibilite->image)
-                                    <img src="{{ asset('storage/' . $article->accessibilite->image) }}"
-                                        alt="Accessibilité: {{ $article->accessibilite->texte }}">
-                                @endif
-                                <p class="characteristic-label">Accessibilité</p>
-                            </a>
-                        </div>
-                    @endif
-
-                    @if($article->conclusion)
-                        <div class="characteristic-card">
-                            <a href="{{ route('conclusion.articles', $article->conclusion->id) }}">
-                                <p class="characteristic-label">Conclusion</p>
-                                <h3>{{ $article->conclusion->texte }}</h3>
-                                @if ($article->conclusion->image)
-                                    <img src="{{ asset('storage/' . $article->conclusion->image) }}"
-                                        alt="Conclusion: {{ $article->conclusion->texte }}">
-                                @endif
-                            </a>
-                        </div>
-                    @endif
+                <div class="article-content ">
+                    <h2>Article complet</h2>
+                    <div class="article-text prose max-w-none">
+                        {{ $article->texte }}
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="article-content">
-            <h2>Article complet</h2>
-            <div class="article-text prose max-w-none">
-                @markdown($article->texte)
             </div>
         </div>
 
@@ -117,8 +79,8 @@
 
             @auth
                 <div class="comment-form">
-                    <form class="flex flex-col md:flex-row justify-between items-center gap-2" action="{{ route('article.comment', $article->id) }}"
-                        method="POST">
+                    <form class="flex flex-col md:flex-row justify-between items-center gap-2"
+                        action="{{ route('article.comment', $article->id) }}" method="POST">
                         @csrf
                         <textarea class="glass-morph w-full md:w-2/3 h-10 flex p-2 px-4" name="contenu" rows="4"
                             placeholder="Votre commentaire..." required></textarea>
@@ -203,26 +165,32 @@
             width: 100% !important;
             padding: 0 0.5rem !important;
         }
+
         .article-header {
             grid-template-columns: 1fr !important;
             grid-template-rows: repeat(6, auto);
             gap: 1.5rem !important;
         }
+
         .article-image {
             min-height: 180px;
         }
+
         .custom-audio-player {
             flex-direction: column;
             align-items: flex-start;
         }
+
         .article-meta {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
+
         .article-views {
             align-self: flex-end !important;
             margin-top: 0.5rem !important;
         }
+
         .comment-form form {
             flex-direction: column !important;
             gap: 0.5rem !important;
