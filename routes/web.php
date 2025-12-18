@@ -14,10 +14,6 @@ Route::get('/contact', function () {
     return view('contact');
 })->name("contact");
 
-Route::get('/test-vite', function () {
-    return view('test-vite');
-})->name("test-vite");
-
 // Routes pour l'affichage des articles (accueil et filtres)
 Route::get('/articles', [ArticleController::class, 'index'])->name("articles.all");
 Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByCharacteristic'])->name('articles.filter');
