@@ -1,7 +1,8 @@
-:root {
-  --bg-color: #0e0d0d;
-  --txt-color: #eeeeee;
-  --title-color: #BBC6C7;
+@theme {
+  --color-bg-color: #0e0d0d;
+  --color-txt-color: #eeeeee;
+  --color-title-color: #BBC6C7;
+  --color-redc:#A7001E;
 }
 
 .glass-morph {

@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=New+Rocker&display=swap');
+
 
 .scd-font {
     font-family:"UnifrakturCook";
 }
 
-#hero-text {
-    font-size: 15vw;
-    filter: drop-shadow(0 0 300px rgb(255, 255, 255,0.2));
-    overflow: visible; 
+#hero-stroke-text {
+    color: transparent;
+    background: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.7);
+    text-stroke: 1px rgba(255,255,255,0.5);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
