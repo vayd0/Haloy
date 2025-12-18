@@ -4,35 +4,25 @@ namespace App\Notifications;
 
 use App\Models\Article;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue; // Important pour la file d'attente
 use Illuminate\Notifications\Notification;
 
 class NewArticlePublished extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    // Article publié
     public $article;
 
-    /**
-     * Création de la notification
-     */
     public function __construct(Article $article)
     {
         $this->article = $article;
     }
 
-    /**
-     * Canaux de notification (base de données)
-     */
     public function via(object $notifiable): array
     {
         return ['database'];
     }
 
-    /**
-     * Données stockées dans la base de données
-     */
     public function toArray(object $notifiable): array
     {
         return [
@@ -45,4 +35,3 @@ class NewArticlePublished extends Notification implements ShouldQueue
         ];
     }
 }
-

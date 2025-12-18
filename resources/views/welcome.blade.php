@@ -18,13 +18,13 @@
                     <div class="absolute z-[15] inset-0" id="scene-container"></div>
                 </div>
                 <div
-                    class="flex justify-start items-center absolute top-[15rem] right-[5vw] md:right-[22vw] glass-morph w-[300px] h-[50px] p-4 z-[99]">
+                    class="flex justify-start items-center absolute top-[15rem] right-[5vw] md:right-[22vw] glass-morph w-auto h-[50px] p-4 z-[99]">
                     <div class="text-sm font-light">
                         Votre blog de métal symphonique.
                     </div>
                 </div>
                 <div
-                    class="flex justify-end items-center absolute top-2/3 left-[5vw] md:left-[30vw] glass-morph w-[200px] h-[50px] p-4 z-[99]">
+                    class="flex justify-end items-center absolute top-2/3 left-[5vw] md:left-[30vw] glass-morph w-auto h-[50px] p-4 z-[99]">
                     <div class="text-sm font-light">
                         <a href="#insta" target="_blank" class="mx-2 text-xl">
                             <i class="fab fa-instagram"></i>

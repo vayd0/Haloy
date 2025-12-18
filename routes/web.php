@@ -4,19 +4,16 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\CaracteristiqueController;
+use App\Http\Controllers\ContactController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [AccueilController::class, 'index'])->name("accueil");
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name("contact");
-
-Route::get('/test-vite', function () {
-    return view('test-vite');
-})->name("test-vite");
+// Routes pour les contacts
+Route::get('/contact', [ContactController::class, 'index'])->name("contact");
+Route::post('/contact', [ContactController::class, 'store'])->name("contact.store");
 
 // Routes pour l'affichage des articles (accueil et filtres)
 Route::get('/articles', [ArticleController::class, 'index'])->name("articles.all");
@@ -25,6 +22,7 @@ Route::get('/articles/filter/{type}/{id}', [ArticleController::class, 'filterByC
 // Routes nécessitant une authentification
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/notifications/mark-all-read', [UserController::class, 'markAllNotificationsAsRead'])->name('notifications.mark-all-read');
 });
 
 // Route pour afficher la page d'un utilisateur
