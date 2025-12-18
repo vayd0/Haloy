@@ -1,33 +1,67 @@
 @extends('layout.app')
 
-@section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="mb-4">Nous contacter</h1>
+@section('contenu')
+<section class="contact-section">
+    <div class="contact-container">
+        <div class="contact-wrapper">
+            <h1 class="contact-title">Nous contacter</h1>
+            <p class="contact-subtitle">Envoyez-nous un message et nous vous répondrons au plus vite.</p>
 
-            <form method="POST" action="#" class="card p-4">
+            @if ($errors->any())
+                <div class="contact-errors">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="contact-success">
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('contact.store') }}" class="contact-form">
                 @csrf
 
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="nom" class="form-label">Nom</label>
-                    <input type="text" class="form-control" id="nom" name="nom" required>
+                    <input type="text" id="nom" name="nom" value="{{ old('nom') }}"
+                        class="form-input"
+                        placeholder="Votre nom" required>
+                    @error('nom')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}"
+                        class="form-input"
+                        placeholder="votre.email@exemple.com" required>
+                    @error('email')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    <textarea id="message" name="message" rows="6"
+                        class="form-input form-textarea"
+                        placeholder="Votre message..." required>{{ old('message') }}</textarea>
+                    @error('message')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary">Envoyer</button>
+                <button type="submit" class="submit-button">
+                    Envoyer le message
+                </button>
             </form>
         </div>
     </div>
-</div>
+</section>
 @endsection
 
