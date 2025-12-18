@@ -62,9 +62,8 @@
                             </div>
                             <form action="{{ route('users.follow', $suggestedUser->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors text-sm font-medium">
-                                    Suivre
-                                </button>
+                                {{-- Utilisation du composant follow-button --}}
+                                <x-follow.button :user-id="$suggestedUser->id" :is-following="$suggestedUser->is_followed" />
                             </form>
                         </div>
                     @endforeach

@@ -12,7 +12,9 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/test-vite.css',
                 'resources/js/test-vite.js',
-                'resources/js/vinyl.js'
+                'resources/js/vinyl.js', 
+                'resources/js/dropdown.js', 
+                'resources/js/navbar.js'
             ],
             refresh: true,
         }),

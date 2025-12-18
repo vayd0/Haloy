@@ -19,20 +19,6 @@ class ArticleController extends Controller
             $query->orWhere('user_id', Auth::id());
         }
 
-        $articles = $query->get();
-
-        return view('home', compact('articles'));
-    }
-
-    // Affiche tous les articles avec pagination
-    public function allArticles()
-    {
-        $query = Article::where('en_ligne', true);
-
-        if (Auth::check()) {
-            $query->orWhere('user_id', Auth::id());
-        }
-
         $articles = $query
             ->with(['editeur', 'rythme', 'accessibilite', 'conclusion'])
             ->orderBy('created_at', 'desc')
@@ -40,6 +26,7 @@ class ArticleController extends Controller
 
         return view('article.all', compact('articles'));
     }
+
 
     // Filtre les articles par caractéristique (rythme, accessibilité, conclusion)
     public function filterByCharacteristic($type, $id)

@@ -1,28 +1,31 @@
 @extends("layout.app")
 
 @section('contenu')
-    <div class="article-container">
+    <div class="article-container pt-[10rem]">
         <div class="article-header">
-            <h1>{{ $article->titre }}</h1>
+            <h1 class="title">{{ $article->titre }}</h1>
             <div class="article-meta">
-            <span class="author-info">
-                @if ($article->editeur->avatar)
-                    <img src="{{ asset('storage/' . $article->editeur->avatar) }}" alt="{{ $article->editeur->name }}" class="avatar-small">
-                @else
-                    <div class="avatar-small" style="background: #ccc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">{{ substr($article->editeur->name, 0, 1) }}</div>
-                @endif
-                <span class="author-name">{{ $article->editeur->name }}</span>
-            </span>
+                <span class="author-info">
+                    @if ($article->editeur->avatar)
+                        <img src="{{ asset('storage/' . $article->editeur->avatar) }}" alt="{{ $article->editeur->name }}"
+                            class="avatar-small">
+                    @else
+                        <div class="avatar-small"
+                            style="background: #ccc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            {{ substr($article->editeur->name, 0, 1) }}</div>
+                    @endif
+                    <span class="author-name">{{ $article->editeur->name }}</span>
+                </span>
                 <span class="article-date">
-                @if ($article->updated_at != $article->created_at)
+                    @if ($article->updated_at != $article->created_at)
                         Modifié le {{ $article->updated_at->format('d/m/Y à H:i') }}
                     @else
                         Publié le {{ $article->created_at->format('d/m/Y à H:i') }}
                     @endif
-            </span>
+                </span>
                 <span class="article-views">
-                 {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
-            </span>
+                    {{ $article->nb_vues }} vue{{ $article->nb_vues > 1 ? 's' : '' }}
+                </span>
             </div>
         </div>
 
@@ -45,7 +48,8 @@
                         <a href="{{ route('rythme.articles', $article->rythme->id) }}">
                             <h3>{{ $article->rythme->texte }}</h3>
                             @if ($article->rythme->image)
-                                <img src="{{ asset('storage/' . $article->rythme->image) }}" alt="Rythme: {{ $article->rythme->texte }}">
+                                <img src="{{ asset('storage/' . $article->rythme->image) }}"
+                                    alt="Rythme: {{ $article->rythme->texte }}">
                             @endif
                             <p class="characteristic-label">Rythme</p>
                         </a>
@@ -57,7 +61,8 @@
                         <a href="{{ route('accessibilite.articles', $article->accessibilite->id) }}">
                             <h3>{{ $article->accessibilite->texte }}</h3>
                             @if ($article->accessibilite->image)
-                                <img src="{{ asset('storage/' . $article->accessibilite->image) }}" alt="Accessibilité: {{ $article->accessibilite->texte }}">
+                                <img src="{{ asset('storage/' . $article->accessibilite->image) }}"
+                                    alt="Accessibilité: {{ $article->accessibilite->texte }}">
                             @endif
                             <p class="characteristic-label">Accessibilité</p>
                         </a>
@@ -69,7 +74,8 @@
                         <a href="{{ route('conclusion.articles', $article->conclusion->id) }}">
                             <h3>{{ $article->conclusion->texte }}</h3>
                             @if ($article->conclusion->image)
-                                <img src="{{ asset('storage/' . $article->conclusion->image) }}" alt="Conclusion: {{ $article->conclusion->texte }}">
+                                <img src="{{ asset('storage/' . $article->conclusion->image) }}"
+                                    alt="Conclusion: {{ $article->conclusion->texte }}">
                             @endif
                             <p class="characteristic-label">Conclusion</p>
                         </a>
@@ -90,7 +96,7 @@
 
         <div class="article-content">
             <h2>Article complet</h2>
-            {{-- MODIFICATION ICI : Utilisation de @markdown et de la classe prose pour le style --}}
+            {{-- Utilisation de @markdown et de la classe prose pour le style --}}
             <div class="article-text prose max-w-none">
                 @markdown($article->texte)
             </div>
@@ -100,39 +106,17 @@
             <h2>Avis des lecteurs</h2>
             <div class="likes-section">
                 <div class="like-stats">
-                <span class="like-count">
-                    <strong>👍 {{ $likesCount }}</strong> J'aime
-                </span>
+                    <span class="like-count">
+                        <strong>👍 {{ $likesCount }}</strong> J'aime
+                    </span>
                     <span class="dislike-count">
-                    <strong>👎 {{ $dislikesCount }}</strong> Je n'aime pas
-                </span>
+                        <strong>👎 {{ $dislikesCount }}</strong> Je n'aime pas
+                    </span>
                 </div>
 
                 @auth
-                    <div class="like-actions">
-                        <form action="{{ route('article.like', $article->id) }}" method="POST" class="like-form">
-                            @csrf
-                            <input type="hidden" name="nature" value="1">
-                            <button type="submit" class="btn btn-like {{ $userLikeStatus === true ? 'active' : '' }}">
-                                👍 J'aime
-                            </button>
-                        </form>
-                        <form action="{{ route('article.dislike', $article->id) }}" method="POST" class="like-form">
-                            @csrf
-                            <input type="hidden" name="nature" value="0">
-                            <button type="submit" class="btn btn-dislike {{ $userLikeStatus === false ? 'active' : '' }}">
-                                👎 Je n'aime pas
-                            </button>
-                        </form>
-                        @if ($userLikeStatus !== null)
-                            <form action="{{ route('article.unlike', $article->id) }}" method="POST" class="like-form">
-                                @csrf
-                                <button type="submit" class="btn btn-unlike">
-                                    ✕ Retirer
-                                </button>
-                            </form>
-                        @endif
-                    </div>
+                    {{-- Utilisation du composant like-button --}}
+                    <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus" />
                 @else
                     <div class="login-prompt">
                         <p><a href="{{ route('login') }}">Connectez-vous</a> pour voter sur cet article</p>
@@ -157,9 +141,9 @@
                         @csrf
                         <textarea name="contenu" rows="4" placeholder="Votre commentaire..." required></textarea>
                         @error('contenu')
-                            <div class="text-red-500 mt-2 text-sm" style="color: red;">
-                                {{ $message }}
-                            </div>
+                        <div class="text-red-500 mt-2 text-sm" style="color: red;">
+                            {{ $message }}
+                        </div>
                         @enderror
                         <button type="submit" class="btn btn-primary">Publier</button>
                     </form>
@@ -177,7 +161,8 @@
                             <div class="comment-header">
                                 <div class="comment-author">
                                     @if ($comment->user->avatar)
-                                        <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}" class="avatar-small">
+                                        <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}"
+                                            class="avatar-small">
                                     @endif
                                     <strong>{{ $comment->user->name }}</strong>
                                     <span class="comment-date">{{ $comment->created_at->format('d/m/Y à H:i') }}</span>
