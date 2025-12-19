@@ -7,7 +7,10 @@
                 <div class="audio-player-container w-full">
                     <div id="custom-audio-player"
                         class="custom-audio-player bg-white/50 max-w-full flex justify-between items-center"
-                        style="background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,1)), url('{{ $article->image ?? asset('storage/' . $article->image) }}'); background-size: cover;">
+                        style="background: linear-gradient(rgba(255,255,255,0.3), 
+                        rgba(255,255,255,1)), 
+                        url('{{ $article->image ?? asset('storage/' . $article->image) }}'); 
+                        background-size: cover;">
                         <div class="flex justify-center items-center w-full">
                             <button id="play-pause" class="play">
                                 <img class="w-[10rem]" src="{{ asset('images/Play.png') }}" alt="">
@@ -25,7 +28,8 @@
                 <h1 class="title text-2xl md:text-[2.5rem] font-bold break-words">{{ $article->titre }}</h1>
                 <div class="article-meta flex flex-col md:flex-row gap-1 md:justify-between w-full">
                     <span class="author-info text-white">
-                        <a class="author-name hover:underline" href="{{ route("users.show", $article->editeur->id) }}" class="mb-4">{{ $article->editeur->name }}</a>
+                        <a class="author-name hover:underline" href="{{ route("users.show", $article->editeur->id) }}"
+                            class="mb-4">{{ $article->editeur->name }}</a>
                     </span>
                     <span class="article-date text-white text-sm">
                         @if ($article->updated_at != $article->created_at)
@@ -59,14 +63,18 @@
                 <p>{{ $article->resume }}</p>
             </div>
             <div class="article-characteristics">
-                <h2 class="text-lg font-semibold">Caractéristiques</h2>
                 <div class="article-content ">
-                    <h2>Article complet</h2>
+                    <h2 class="text-lg font-semibold">Article complet</h2>
                     <div class="article-text prose max-w-none">
                         {{ $article->texte }}
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="glass-morph p-4 w-1/3 mt-2">
+            <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus ?? null" :likes-count="$likesCount"
+            :dislikes-count="$dislikesCount" />
         </div>
 
         <div class="article-comments mt-4">
@@ -123,7 +131,6 @@
                 <p class="no-comments">Aucun commentaire pour le moment. Soyez le premier à commenter!</p>
             @endif
         </div>
-
         @if ($similarArticles->count() > 0)
             <div class="similar-articles">
                 <h2>Articles similaires</h2>

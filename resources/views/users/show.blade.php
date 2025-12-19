@@ -27,7 +27,7 @@
                             </svg>
                             @if($article->image)
                                 <img src="{{ $article->image }}" alt="{{ $article->titre }}"
-                                    class="w-full h-48 object-fit rounded-lg mb-4">
+                                    class="w-full h-48 object-cover rounded-lg mb-4">
                             @else
                                 <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
                                     <span class="text-gray-400">Pas d'image</span>

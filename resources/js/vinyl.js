@@ -59,7 +59,7 @@ if (!dev) {
     scene.environment = hdrMap;
 
     const loader = new GLTFLoader();
-    loader.load("/~but25_groupe7/3D/vinyl.glb", (gltf) => {
+    loader.load("3D/vinyl.glb", (gltf) => {
       vinylModel = gltf.scene;
       vinylModel.scale.setScalar(0.6);
 
