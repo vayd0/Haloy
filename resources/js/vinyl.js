@@ -4,24 +4,28 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 const dev = false;
+const container = document.getElementById("scene-container");
 
-if (!dev) {
+if (!dev && container) {
   const scene = new THREE.Scene();
   const mouse = new THREE.Vector2();
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+  );
   camera.position.set(0, 3, 8);
 
-  const renderer = new THREE.WebGLRenderer({ 
-    antialias: true, 
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
     alpha: true,
-    powerPreference: "high-performance" 
+    powerPreference: "high-performance",
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  
-  const container = document.getElementById("scene-container");
   if (container) container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -33,8 +37,14 @@ if (!dev) {
   dirLight.position.set(5, 10, 7);
   scene.add(dirLight);
 
-  const ENTRY = { position: new THREE.Vector3(0, 0.5, 8), rotation: new THREE.Euler(0.2, 0, 0) };
-  const OUT   = { position: new THREE.Vector3(0, 1, 0.5), rotation: new THREE.Euler(1.2, 0.5, 1) };
+  const ENTRY = {
+    position: new THREE.Vector3(0, 0.5, 8),
+    rotation: new THREE.Euler(0.2, 0, 0),
+  };
+  const OUT = {
+    position: new THREE.Vector3(0, 1, 0.5),
+    rotation: new THREE.Euler(1.2, 0.5, 1),
+  };
 
   let vinylModel;
   let animState = "in";
@@ -49,43 +59,58 @@ if (!dev) {
 
   function animateToCoords(target, speed = 0.05) {
     vinylModel.position.lerp(target.position, speed);
-    vinylModel.rotation.x = THREE.MathUtils.lerp(vinylModel.rotation.x, target.rotation.x, speed);
-    vinylModel.rotation.y = THREE.MathUtils.lerp(vinylModel.rotation.y, target.rotation.y, speed);
-    vinylModel.rotation.z = THREE.MathUtils.lerp(vinylModel.rotation.z, target.rotation.z, speed);
+    vinylModel.rotation.x = THREE.MathUtils.lerp(
+      vinylModel.rotation.x,
+      target.rotation.x,
+      speed
+    );
+    vinylModel.rotation.y = THREE.MathUtils.lerp(
+      vinylModel.rotation.y,
+      target.rotation.y,
+      speed
+    );
+    vinylModel.rotation.z = THREE.MathUtils.lerp(
+      vinylModel.rotation.z,
+      target.rotation.z,
+      speed
+    );
   }
 
-  new RGBELoader().load("https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_08_1k.hdr", (hdrMap) => {
-    hdrMap.mapping = THREE.EquirectangularReflectionMapping;
-    scene.environment = hdrMap;
+  new RGBELoader().load(
+    "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_08_1k.hdr",
+    (hdrMap) => {
+      hdrMap.mapping = THREE.EquirectangularReflectionMapping;
+      scene.environment = hdrMap;
 
-    const loader = new GLTFLoader();
-    loader.load("3D/vinyl.glb", (gltf) => {
-      vinylModel = gltf.scene;
-      vinylModel.scale.setScalar(0.6);
+      const loader = new GLTFLoader();
+      loader.load("/~but25_groupe7/3D/vinyl.glb", (gltf) => {
+        vinylModel = gltf.scene;
+        vinylModel.scale.setScalar(0.6);
 
-      const box = new THREE.Box3().setFromObject(vinylModel);
-      const center = box.getCenter(new THREE.Vector3());
-      vinylModel.position.sub(center);
+        const box = new THREE.Box3().setFromObject(vinylModel);
+        const center = box.getCenter(new THREE.Vector3());
+        vinylModel.position.sub(center);
 
-      setVinylCoords(ENTRY);
+        setVinylCoords(ENTRY);
 
-      const chromeMat = new THREE.MeshPhysicalMaterial({
-        color: 0xcccccc,
-        metalness: 1,
-        roughness: 0.04,
-        envMap: scene.environment,
-        envMapIntensity: 3.5,
-        clearcoat: 1,
-        clearcoatRoughness: 0.01,
-        ior: 2.5,
+        const chromeMat = new THREE.MeshPhysicalMaterial({
+          color: 0xcccccc,
+          metalness: 1,
+          roughness: 0.04,
+          envMap: scene.environment,
+          envMapIntensity: 3.5,
+          clearcoat: 1,
+          clearcoatRoughness: 0.01,
+          ior: 2.5,
+        });
+
+        vinylModel.traverse((child) => {
+          if (child.isMesh) child.material = chromeMat;
+        });
+        scene.add(vinylModel);
       });
-
-      vinylModel.traverse((child) => {
-        if (child.isMesh) child.material = chromeMat;
-      });
-      scene.add(vinylModel);
-    });
-  });
+    }
+  );
 
   function animate() {
     requestAnimationFrame(animate);
@@ -107,15 +132,19 @@ if (!dev) {
       } else if (animState === "idle") {
         const targetX = OUT.rotation.x + mouse.y * 0.25;
         const targetZ = OUT.rotation.z + mouse.x * 0.25;
-        vinylModel.rotation.x += (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
-        vinylModel.rotation.z += (targetZ - vinylModel.rotation.z) * 0.08 * followAmount;
+        vinylModel.rotation.x +=
+          (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
+        vinylModel.rotation.z +=
+          (targetZ - vinylModel.rotation.z) * 0.08 * followAmount;
       } else if (animState === "out") {
         followAmount = Math.max(0, followAmount - 0.07);
         animateToCoords(ENTRY, 0.05);
         const targetX = OUT.rotation.x + mouse.y * 0.25;
         const targetZ = OUT.rotation.z + mouse.x * 0.25;
-        vinylModel.rotation.x += (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
-        vinylModel.rotation.z += (targetZ - vinylModel.rotation.z) * 0.08 * followAmount;
+        vinylModel.rotation.x +=
+          (targetX - vinylModel.rotation.x) * 0.08 * followAmount;
+        vinylModel.rotation.z +=
+          (targetZ - vinylModel.rotation.z) * 0.08 * followAmount;
 
         if (
           vinylModel.position.distanceTo(ENTRY.position) < 0.01 &&

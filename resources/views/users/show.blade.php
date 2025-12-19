@@ -2,23 +2,31 @@
 
 @section('contenu')
 
-    <section class="w-full mt-[11vh]">
-        <div class="flex justify-between items-center w-full mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-6">{{$user->name}}</h1>
-            <x-stat-badge label="Abonnements" :value="$user->suivis->count()" icon="<i class='fa-solid fa-users'></i>" />
-            <x-stat-badge label="Likes" :value="$user->likes->count()" icon="<i class='fa-solid fa-heart'></i>" />
-            <x-stat-badge label="Abonnés" :value="$user->suiveurs->count()" icon="<i class='fa-solid fa-user'></i>" />
-            <x-stat-badge label="Posts" :value="$user->mesArticles()->where('en_ligne', 1)->count()"
-                icon="<i class='fa-solid fa-music'></i>" />
-            <x-notifications />
-        </div>
+    <section class="w-full mt-[21vh]">
         <div class="p-4">
+            <div class="flex justify-center items-center w-full mx-auto px-4 py-8 gap-5">
+                <h1 class="text-3xl font-bold">{{$user->name}}</h1>
+                <div class="flex justify-end items-center">
+                    <x-follow.button :user-id="$user->id"
+                        :is-following="auth()->check() ? $user->suiveurs->contains(auth()->id()) : false" />
+                </div>
+            </div>
+            <div class="ml-auto w-full flex flex-wrap justify-center items-center mb-6 px-4 gap-3">
+                    <x-stat-badge label="Abonnements" :value="$user->suivis->count()"
+                        icon="<i class='fa-solid fa-users'></i>" />
+                    <x-stat-badge label="Likes" :value="$user->likes->count()" icon="<i class='fa-solid fa-heart'></i>" />
+                    <x-stat-badge label="Abonnés" :value="$user->suiveurs->count()"
+                        icon="<i class='fa-solid fa-user'></i>" />
+                    <x-stat-badge label="Posts" :value="$user->mesArticles()->where('en_ligne', 1)->count()"
+                        icon="<i class='fa-solid fa-music'></i>" />
+            </div>
             <div class="rounded-lg mb-8">
-                <h1 class="title text-[3rem] m-4">Titres likés</h1>
+                <h1 class="title text-[3rem] my-4">Titres likés</h1>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($user->likes as $article)
 
-                        <div class="rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 glass-morph">
+                        <div
+                            class="flex flex-col h-full rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 glass-morph">
                             <svg class="absolute top-[-5.75rem] right-[-4rem] h-64" style="pointer-events: none;" id="Calque_2"
                                 data-name="Calque 2" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1200">
@@ -34,19 +42,20 @@
                                 </div>
                             @endif
 
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="font-bold text-lg mb-2">{{ $article->titre }}</h3>
                                 <p class="text-gray-600 text-sm mb-4 line-clamp-3 text-white/80">{{ $article->resume }}</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs text-gray-200">Créé le
-                                        {{ $article->created_at->format('d/m/Y') }}</span>
-                                    @auth
-                                        <a href="{{ route('article.edit', $article->id) }}"
-                                            class="h-10 w-10 glass-morph text-redc/80 hover:text-redc text-md transition-all duration-300 flex justify-center items-center gap-1 shadow-none hover:rotate-[10deg] hover:scale-105">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                    @endauth
-                                </div>
+                            </div>
+                            <div class="flex-1"></div>
+                            <div class="mt-auto flex justify-between items-center">
+                                <span class="text-xs text-gray-200">Créé le
+                                    {{ $article->created_at->format('d/m/Y') }}</span>
+                                @auth
+                                    <a href="{{ route('article.show', $article->id) }}"
+                                        class="h-10 w-10 glass-morph text-redc/80 hover:text-redc text-md transition-all duration-300 flex justify-center items-center gap-1 shadow-none hover:rotate-[10deg] hover:scale-105">
+                                        <i class="fas fa-arrow-right rotate-[-45deg]"></i>
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     @endforeach

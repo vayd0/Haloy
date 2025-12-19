@@ -6,11 +6,10 @@
             <div class="article-media w-full h-full">
                 <div class="audio-player-container w-full">
                     <div id="custom-audio-player"
-                        class="custom-audio-player bg-white/50 max-w-full flex justify-between items-center"
-                        style="background: linear-gradient(rgba(255,255,255,0.3), 
-                        rgba(255,255,255,1)), 
-                        url('{{ $article->image ?? asset('storage/' . $article->image) }}'); 
-                        background-size: cover;">
+                        class="custom-audio-player bg-white/50 max-w-full flex justify-between items-center" style="background: linear-gradient(rgba(255,255,255,0.3), 
+                                rgba(255,255,255,1)), 
+                                url('{{ $article->image ?? asset('storage/' . $article->image) }}'); 
+                                background-size: cover;">
                         <div class="flex justify-center items-center w-full">
                             <button id="play-pause" class="play">
                                 <img class="w-[10rem]" src="{{ asset('images/Play.png') }}" alt="">
@@ -72,13 +71,25 @@
             </div>
         </div>
 
-        <div class="glass-morph p-4 w-1/3 mt-2">
-            <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus ?? null" :likes-count="$likesCount"
-            :dislikes-count="$dislikesCount" />
-        </div>
+        @if ($similarArticles->count() > 0)
+            <div class="similar-articles mb-20">
+                <h2 class="title text-center text-[2rem] m-4 mt-[3rem]">Articles similaires</h2>
+                <div class="articles-grid flex justify-center flex-wrap gap-[2.5rem] w-full mt-16">
+
+                    @foreach($similarArticles as $article)
+                        <x-cards.article-card :article="$article" />
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
 
         <div class="article-comments mt-4">
-
+            <div class="glass-morph p-4 w-1/3 mb-2">
+                <x-like.button :article-id="$article->id" :user-like-status="$userLikeStatus ?? null"
+                    :likes-count="$likesCount" :dislikes-count="$dislikesCount" />
+            </div>
+            
             @if(session('success'))
                 <div class="alert alert-success" style="color: green; margin-bottom: 15px;">
                     {{ session('success') }}
@@ -131,17 +142,6 @@
                 <p class="no-comments">Aucun commentaire pour le moment. Soyez le premier à commenter!</p>
             @endif
         </div>
-        @if ($similarArticles->count() > 0)
-            <div class="similar-articles">
-                <h2>Articles similaires</h2>
-                <div class="articles-grid flex justify-center flex-wrap gap-[2.5rem] w-full mt-16">
-
-                    @foreach($similarArticles as $article)
-                        <x-cards.article-card :article="$article" />
-                    @endforeach
-                </div>
-            </div>
-        @endif
     </div>
 @endsection
 

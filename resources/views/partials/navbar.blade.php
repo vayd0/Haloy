@@ -1,4 +1,4 @@
-<nav class="fixed top-0 left-1/2 transform -translate-x-1/2 w-[60%] mx-auto px-2 py-1 text-white bg-transparent z-[999] hidden sm:block glass-morph m-4" style="border-radius:300px;">
+<nav class="fixed top-0 left-1/2 transform -translate-x-1/2 w-[80%] mx-auto px-2 py-1 text-white bg-transparent z-[999] hidden sm:block glass-morph m-4" style="border-radius:300px;">
     <div class="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
 
         <div class="flex items-center justify-end gap-8">
@@ -6,7 +6,7 @@
             <a href="{{route('contact')}}">Contact</a>
         </div>
 
-        <a class="flex justify-center mx-10" href="/">
+        <a class="flex justify-center mx-10" href="{{ route('accueil') }}">
             <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-20 w-20">
         </a>
 
@@ -24,7 +24,7 @@
 </nav>
 <nav class="fixed top-0 w-full px-4 py-4 text-white bg-transparent z-[999] sm:hidden">
     <div class="max-w-screen-2xl mx-auto flex items-center justify-between relative">
-        <a href="/">
+        <a href="{{ route('accueil') }}">
             <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-16 w-16">
         </a>
 
@@ -35,7 +35,7 @@
         </button>
 
         <div id="nav-mobile-menu" class="fixed top-0 rounded-tl-[2.5rem] right-0 h-full w-64 bg-bg-color/80 flex flex-col gap-4 pt-[3rem] px-10 text-xl
-                    transform translate-x-full transition-transform duration-300 pointer-events-none z-[9999]">
+                    transform translate-x-[110%] transition-transform duration-300 pointer-events-none z-[9999]">
             <svg class="absolute top-[-1.2rem] left-[-30%] h-48 pointer-events-none" id="Calque_1" data-name="Calque 1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1200">
                 <image width="372" height="989" transform="translate(430.05 129.07)"
@@ -47,8 +47,8 @@
                 </svg>
             </button>
 
-            <a href="/articles" class="nav-link rotate-[-2deg]">Articles</a>
-            <a href="/contact" class="nav-link rotate-[2deg]">Contact</a>
+            <a href="{{ route('articles.all') }}" class="nav-link rotate-[-2deg]">Articles</a>
+            <a href="{{ route('contact') }}" class="nav-link rotate-[2deg]">Contact</a>
 
             @auth
                 <a href="{{ route('article.create') }}" class="nav-link rotate-[2deg]">Créer article</a>
