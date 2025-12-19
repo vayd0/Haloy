@@ -6,10 +6,9 @@
         </div>
 
         <div class="flex justify-center gap-6 text-sm font-light flex-1">
-            <a href="#" class="hover:underline">Home</a>
-            <a href="#" class="hover:underline">Compte</a>
-            <a href="#" class="hover:underline">Contact</a>
-            <a href="#" class="hover:underline">Articles</a>
+            <a href="{{ route('accueil') }}" class="hover:underline">Home</a>
+            <a href="{{ route('contact') }}" class="hover:underline">Contact</a>
+            <a href="{{ route('articles.all') }}" class="hover:underline">Articles</a>
             <span>@haloy</span>
         </div>
         
