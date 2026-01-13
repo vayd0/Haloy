@@ -63,6 +63,7 @@ L’objectif était de concevoir un site web complet avec gestion d’articles, 
    ```
 3. **Configurer l’environnement**
    - Copier `.env.example` en `.env` et adapter les variables
+   - Migration `php artisan migrate` et `php artisan migrate --seed`
    - Générer la clé Laravel :  
      `php artisan key:generate`
 4. **Lancer le serveur**
