@@ -1,16 +1,16 @@
-<nav class="fixed top-0 left-1/2 transform -translate-x-1/2 w-[80%] mx-auto px-2 py-1 text-white bg-transparent z-[999] hidden sm:block glass-morph m-4" style="border-radius:300px;">
+<nav
+    class="fixed top-1 left-1/2 transform -translate-x-1/2 w-auto h-20 mx-auto px-6 py-1 text-white z-999 hidden sm:block bg-black/30 backdrop-blur rounded-full">
     <div class="max-w-screen-2xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
 
-        <div class="flex items-center justify-end gap-8">
+        <div class="flex items-start justify-end gap-8 mb-10">
             <a href="{{route('articles.all')}}">Articles</a>
             <a href="{{route('contact')}}">Contact</a>
         </div>
-
-        <a class="flex justify-center mx-10" href="{{ route('accueil') }}">
-            <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-20 w-20">
+        <a class=" flex justify-center items-center mx-10" href="{{ route('accueil') }}">
+            <img src="{{ asset('images/logo_black.png') }}" alt="Logo" class="h-30 min-w-30">
         </a>
 
-        <div class="flex items-center justify-start gap-8">
+        <div class="flex items-start justify-start gap-8 mb-10">
             @auth
                 <a href="{{ route('article.create') }}">Créer article</a>
                 <x-compte />
