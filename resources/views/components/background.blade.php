@@ -9,7 +9,7 @@
         attributeName="seed"
         from="0"
         to="100"
-        dur="1s"
+        dur="8s"
         repeatCount="indefinite" />
     </feTurbulence>
   </filter>

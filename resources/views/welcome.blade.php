@@ -64,6 +64,15 @@
         </div>
     </section>
 
+    {{-- Loader : logo qui tourne jusqu'au chargement du modèle 3D --}}
+    <div id="vinyl-loader" style="position:fixed;inset:0;z-index:9999;background:#0e0d0d;display:flex;align-items:center;justify-content:center;transition:opacity .7s ease,visibility .7s ease;">
+        <img src="{{ asset('images/logo_black.png') }}" alt="" style="width:clamp(80px,10vw,130px);filter:invert(1) brightness(1.4);animation:loader-spin 1.2s linear infinite;">
+    </div>
+    <style>
+        @keyframes loader-spin { to { transform: rotate(360deg); } }
+        #vinyl-loader.done { opacity:0; visibility:hidden; pointer-events:none; }
+    </style>
+
     @vite('resources/js/vinyl.js')
     @vite('resources/css/home.css')
 @endsection
